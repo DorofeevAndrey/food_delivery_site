@@ -1,13 +1,10 @@
 from pydantic import BaseModel
 
-class OTPRequest(BaseModel):
-    phone: str
-    method: str  # "sms" или "telegram"
+class AuthStartScheme(BaseModel):
+    session_id: str
+    bot_link: str
 
-class OTPVerify(BaseModel):
+class AuthVerifyScheme(BaseModel):
     phone: str
-    otp: str
+    session_id: str
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str

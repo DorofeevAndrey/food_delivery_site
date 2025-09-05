@@ -1,43 +1,42 @@
+from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import func
 from sqlalchemy.orm import Session
+from jose import jwt
 
-from app.schemas.auth import OTPRequest, OTPVerify, Token
-from app.models.user import User
+from app.schemas.auth import AuthStartScheme, AuthVerifyScheme
+from app.models.user import PendingUser, User
 from app.dependencies import get_db
-from app.crud.auth import generate_otp, send_sms, send_telegram, otp_store, SECRET_KEY, jwt, ALGORITHM
+from app.core.config import settings
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/auth", tags=["Authorization"])
 
-@router.post("/request-otp")
-def request_otp(otp_req: OTPRequest, db: Session = Depends(get_db)):
-    # Проверяем или создаём пользователя
-    user = db.query(User).filter(User.phone == otp_req.phone).first()
-    if not user:
-        user = User(phone=otp_req.phone)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
 
-    otp = generate_otp()
-    otp_store[otp_req.phone] = otp
 
-    if otp_req.method == "sms":
-        send_sms(otp_req.phone, otp)
-    elif otp_req.method == "telegram":
-        send_telegram(otp_req.phone, otp)
+@router.post("/start", response_model=AuthStartScheme)
+def auth_start(phone: str, db: Session = Depends(get_db)):
+    session_id = str(uuid4())
+    existing = db.query(PendingUser).filter_by(phone=phone).first()
+    if existing:
+        existing.session_id = session_id
+        existing.is_verified = False
+        existing.created_at = func.now()
     else:
-        raise HTTPException(status_code=400, detail="Неподдерживаемый метод")
+        db.add(PendingUser(phone=phone, session_id=session_id))
+    db.commit()
+    bot_link = f"https://t.me/{settings.TELEGRAM_BOT_NAME}?start={session_id}"
+    return AuthStartScheme(session_id=session_id, bot_link=bot_link)
 
-    return {"msg": "Код отправлен"}
+@router.post("/verify")
+def auth_verify(req: AuthVerifyScheme, db: Session = Depends(get_db)):
+    pending = db.query(PendingUser).filter_by(session_id=req.session_id).first()
 
-@router.post("/verify-otp", response_model=Token)
-def verify_otp(verify: OTPVerify):
-    if otp_store.get(verify.phone) != verify.otp:
-        raise HTTPException(status_code=400, detail="Неверный код")
-    del otp_store[verify.phone]  # Удаляем OTP после проверки
-    token = jwt.encode({"sub": verify.phone}, SECRET_KEY, algorithm=ALGORITHM)
-    return {"access_token": token, "token_type": "bearer"}
+    if not pending:
+        raise HTTPException(404, "Session not found")
 
-@router.get("/me")
-def get_me(phone: str = Depends(get_current_user)):
-    return {"phone": phone}
+    if req.phone != pending.phone:
+        raise HTTPException(400, "Phone mismatch")
+    
+    pending.is_verified = True
+    db.commit()
+    return {"status": "ok"}
