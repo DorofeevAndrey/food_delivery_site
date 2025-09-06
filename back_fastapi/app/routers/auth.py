@@ -1,3 +1,4 @@
+import datetime
 from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func
@@ -40,3 +41,26 @@ def auth_verify(req: AuthVerifyScheme, db: Session = Depends(get_db)):
     pending.is_verified = True
     db.commit()
     return {"status": "ok"}
+
+@router.post("/finish")
+def auth_finish(session_id: str, db: Session = Depends(get_db)):
+    pending = db.query(PendingUser).filter_by(session_id=session_id).first()
+
+    if not pending or not pending.is_verified:
+        raise HTTPException(400, "Not verified yet")
+    
+    user = db.query(User).filter_by(phone=pending.phone).first()
+
+    if not user:
+        user = User(phone=pending.phone)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+    payload = {
+        "sub": str(user.id),
+        "phone": user.phone,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=int(settings.JWT_DAYS))
+    }
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return {"token": token}

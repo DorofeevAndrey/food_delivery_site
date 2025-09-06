@@ -12,6 +12,7 @@ class Settings:
 
     SECRET_KEY = os.getenv("SECRET_KEY")
     ALGORITHM = os.getenv("ALGORITHM")
+    JWT_DAYS = os.getenv("JWT_DAYS")
 
     TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
     TELEGRAM_BOT_NAME = os.getenv("TELEGRAM_BOT_NAME")
