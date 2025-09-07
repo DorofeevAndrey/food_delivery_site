@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "@/components/Button/Button";
 import ProfileIcon from "@/assets/ProfileIcon";
 import styles from "./LoginModal.module.css";
+import { telegramLoginStart } from "@/lib/api/auth";
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -14,6 +15,24 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [phone, setPhone] = useState("");
 
   if (!isOpen) return null;
+
+  const handleTelegramLogin = async () => {
+    if (!phone) return alert("Введите номер телефона");
+
+    try {
+      const data = await telegramLoginStart(phone);
+      if (data.session_id) {
+        alert("Сделали запрос на вход в Telegram");
+        // onClose();
+      } else {
+        alert("Ошибка: " + JSON.stringify(data));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Произошла ошибка при запросе");
+    } finally {
+    }
+  };
 
   return (
     <div className={styles.overlay}>
@@ -44,7 +63,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         </p>
 
         <Button
-          onClick={() => alert("Continue with phone " + phone)}
+          onClick={() => handleTelegramLogin()}
           title="Войти через Telegram"
           icon={<ProfileIcon width={20} height={20} />}
         ></Button>
