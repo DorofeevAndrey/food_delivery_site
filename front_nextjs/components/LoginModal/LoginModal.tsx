@@ -18,6 +18,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [phone, setPhone] = useState("+7 ");
   const [agree, setAgree] = useState(false);
 
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [botLink, setBotLink] = useState<string | null>(null);
+
   console.log(phone);
 
   if (!isOpen) return null;
@@ -27,16 +30,18 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
     try {
       const data = await telegramLoginStart(phone);
-      if (data.session_id) {
-        alert("Сделали запрос на вход в Telegram");
-        // onClose();
+      if (data.session_id && data.bot_link) {
+        // Сохраняем данные
+        setSessionId(data.session_id);
+        setBotLink(data.bot_link);
+        // Открываем Telegram
+        window.open(data.bot_link, "_blank");
       } else {
         alert("Ошибка: " + JSON.stringify(data));
       }
     } catch (err) {
       console.error(err);
       alert("Произошла ошибка при запросе");
-    } finally {
     }
   };
 

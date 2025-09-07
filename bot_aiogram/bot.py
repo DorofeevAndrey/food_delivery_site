@@ -37,6 +37,23 @@ async def send_welcome(message: types.Message):
     await message.answer("Привет! Отправь свой номер телефона 👇", reply_markup=phone_kb)
 
 
+def clean_phone(phone: str) -> str:
+    """
+    Убирает все пробелы, скобки и дефисы из номера телефона,
+    оставляя только цифры и плюс в начале.
+    """
+    # Сохраняем плюс в начале, если есть
+    plus = "+"
+    if phone.startswith("+"):
+        phone = phone[1:]
+    else:
+        plus = ""
+
+    # Оставляем только цифры
+    digits = "".join(c for c in phone if c.isdigit())
+
+    return plus + digits
+
 @router.message(lambda msg: msg.contact is not None)
 async def handle_contact(message: types.Message):
     user_id = message.from_user.id
@@ -52,7 +69,9 @@ async def handle_contact(message: types.Message):
         return
 
     phone = message.contact.phone_number
-    payload = {"phone": phone, "session_id": session_id }
+    formatted_phone = clean_phone(phone)
+    payload = {"phone": formatted_phone, "session_id": session_id }
+    print(formatted_phone, session_id)
 
     async with aiohttp.ClientSession() as session:
         async with session.post(f"{settings.BACKEND_URL}/auth/verify", json=payload) as resp:

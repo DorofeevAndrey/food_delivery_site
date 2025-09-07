@@ -10,7 +10,7 @@ class AuthVerifyScheme(BaseModel):
     session_id: str
 
 class TelegramLoginStart(BaseModel):
-    phone: PhoneNumber
+    phone: str
 
 class TelegramLoginFinish(BaseModel):
     session_id: str

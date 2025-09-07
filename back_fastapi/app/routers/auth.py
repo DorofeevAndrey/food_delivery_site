@@ -34,6 +34,8 @@ def auth_verify(req: AuthVerifyScheme, db: Session = Depends(get_db)):
 
     if not pending:
         raise HTTPException(404, "Session not found")
+    
+    print(req.phone, pending.phone)
 
     if req.phone != pending.phone:
         raise HTTPException(400, "Phone mismatch")
