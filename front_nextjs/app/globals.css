@@ -4,12 +4,19 @@
   --color-background: #ffffff;
   --color-foreground: #171717;
   --color-black: #1c1c1c;
+  --color-white: #ffffff;
   --color-grey: #c5c8d1;
-  --color-orange: #883900;
+  --color-orange: #eb3701;
+  --color-subtitle: #2d2e30;
   --font-size-base: 16px;
-  --font-weight-normal: 400px;
-  --font-weight-medium: 500px;
-  --font-weight-bold: 700px;
+  --font-size-sm: 12px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
 }
 /* @theme inline {
   --color-background: var(--background);
@@ -29,6 +36,17 @@
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
 }
 
 html,

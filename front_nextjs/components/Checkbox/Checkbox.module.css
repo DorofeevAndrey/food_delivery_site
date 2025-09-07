@@ -1,0 +1,25 @@
+.checkbox {
+  width: 18px;
+  height: 18px;
+  display: flex; /* flex для центрирования */
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  cursor: pointer;
+
+  flex-shrink: 0; /* запрещаем сжиматься */
+}
+
+.checkbox:hover {
+  border-color: var(--color-orange); /* светло-серый при наведении */
+}
+
+.checked {
+  background-color: var(--color-orange); /* синий */
+  border-color: var(--color-orange);
+}
+
+.icon {
+  color: white;
+}

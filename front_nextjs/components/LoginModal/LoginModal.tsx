@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 import Button from "@/components/Button/Button";
-import ProfileIcon from "@/assets/ProfileIcon";
 import styles from "./LoginModal.module.css";
 import { telegramLoginStart } from "@/lib/api/auth";
+import CloseIcon from "@/assets/CloseIcon";
+import TelegramIcon from "@/assets/TelegramIcon";
+import Checkbox from "../Checkbox/Checkbox";
+import PhoneInput from "../PhoneInput/PhoneInput";
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -12,7 +15,10 @@ type LoginModalProps = {
 };
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+7 ");
+  const [agree, setAgree] = useState(false);
+
+  console.log(phone);
 
   if (!isOpen) return null;
 
@@ -38,34 +44,32 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <Button
-          className={styles.close}
-          onClick={() => onClose}
-          icon={<ProfileIcon width={20} height={20} />}
+          className={styles.closeButton}
+          onClick={() => onClose()}
+          icon={<CloseIcon width={20} height={20} />}
         ></Button>
+
         <h2 className={styles.title}>Войти в профиль</h2>
         <p className={styles.subtitle}>
           Укажите номер телефона и выберите способ подтверждения
         </p>
-        <div className={styles.inputGroup}>
-          <label>+7</label>
-          <input
-            type="text"
-            placeholder="Укажите номер телефона"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className={styles.input}
-          />
+
+        <PhoneInput value={phone} onChange={setPhone} />
+
+        <div className={styles.termsContainer}>
+          <Checkbox checked={agree} onChange={setAgree} />
+          <p className={styles.terms}>
+            Продолжая регистрацию, вы соглашаетесь с условиями сбора и обработки
+            персональных данных, правилами оферты и даете свое согласие на
+            получение новостей и уведомлений
+          </p>
         </div>
-        <p className={styles.terms}>
-          Продолжая регистрацию, вы соглашаетесь с условиями сбора и обработки
-          персональных данных, правилами оферты и даете свое согласие на
-          получение новостей и уведомлений
-        </p>
 
         <Button
+          className={styles.telegramButton}
           onClick={() => handleTelegramLogin()}
           title="Войти через Telegram"
-          icon={<ProfileIcon width={20} height={20} />}
+          icon={<TelegramIcon fill="#ffffff" />}
         ></Button>
       </div>
     </div>

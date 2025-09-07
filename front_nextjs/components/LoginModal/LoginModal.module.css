@@ -10,7 +10,7 @@
 
 .modal {
   position: relative;
-  background-color: #ffffff;
+  background-color: var(--color-white);
   border-radius: 16px;
   padding: 32px;
   width: 100%;
@@ -23,7 +23,7 @@
   gap: 16px;
 }
 
-.close {
+.closeButton {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -33,30 +33,21 @@
   cursor: pointer;
   color: var(--color-black);
   transition: color 0.2s;
+  padding: 4px;
 }
 
-.close:hover {
+.closeButton:hover {
   background-color: var(--color-grey);
 }
 
 .title {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
 }
 
 .subtitle {
-  font-size: 14px;
-  color: #555555;
-  margin: 0;
-}
-
-.inputGroup {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
+  font-size: var(--font-size-base);
+  text-align: center;
 }
 
 .input {
@@ -66,15 +57,24 @@
   font-size: 14px;
 }
 
-.terms {
-  font-size: 12px;
-  color: #777777;
+.termsContainer {
+  display: flex;
+  gap: 4px;
   margin-top: 8px;
 }
 
-.buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
+.terms {
+  font-size: var(--font-size-sm);
+}
+
+.telegramButton {
+  gap: 10px;
+  padding: 8px 16px;
+  background-color: var(--color-orange);
+  color: var(--color-white);
+  width: 100%;
+}
+
+.telegramButton:hover {
+  background-color: var(--color-orange);
 }
