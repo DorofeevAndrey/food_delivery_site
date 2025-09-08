@@ -18,6 +18,12 @@
   background-color: var(--color-grey); /* чуть темнее при наведении */
 }
 
+.button:disabled,
+.button:disabled:hover {
+  background-color: var(--color-grey); /* чуть темнее при наведении */
+  cursor: default;
+}
+
 .icon {
   width: 20px;
   height: 20px;

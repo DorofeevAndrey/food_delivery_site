@@ -8,7 +8,8 @@ type ButtonProps = {
   title?: string;
   onClick?: () => void;
   icon?: ReactNode;
-  className?: string; // <- проп для дополнительных классов
+  className?: string;
+  disable?: boolean;
 };
 
 export default function Button({
@@ -16,11 +17,13 @@ export default function Button({
   onClick,
   icon,
   className,
+  disable,
 }: ButtonProps) {
   return (
     <button
       className={cn(styles.button, className)} // <- объединяем стили
       onClick={onClick}
+      disabled={disable}
     >
       {icon && <span className={styles.icon}>{icon}</span>}
       <span>{title}</span>

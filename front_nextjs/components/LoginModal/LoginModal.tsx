@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/Button/Button";
 import styles from "./LoginModal.module.css";
 import { telegramLoginFinish, telegramLoginStart } from "@/lib/api/auth";
@@ -22,10 +22,22 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [phone, setPhone] = useState("+7 ");
   const [agree, setAgree] = useState(false);
 
+  const [disable, setDisable] = useState<boolean>(true);
+
   const [step, setStep] = useState<"phone" | "waiting" | "finish">("phone");
 
   const [sessionId, setSessionId] = useState<string>("");
   const [botLink, setBotLink] = useState<string>("");
+
+  useEffect(() => {
+    const digits = phone.replace(/\D/g, "");
+
+    if (digits.length === 11 && agree) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [phone, agree]);
 
   console.log(phone);
 
@@ -61,6 +73,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         Cookies.set("token", data.token, { expires: 2, secure: true });
 
         setStep("finish");
+
+        setTimeout(() => {
+          onClose();
+        }, 1500);
       } else {
         alert("Ошибка: " + JSON.stringify(data));
       }
@@ -102,6 +118,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               onClick={() => handleTelegramLogin()}
               title="Войти через Telegram"
               icon={<TelegramIcon fill="#ffffff" />}
+              disable={disable}
             ></Button>
           </>
         )}
