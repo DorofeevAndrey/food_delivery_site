@@ -12,13 +12,19 @@ import BackIcon from "@/assets/BackIcon";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { Check } from "lucide-react";
+import { Token } from "@/lib/api/profile";
 
 type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  getProfile: (token: Token) => void;
 };
 
-export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+export default function LoginModal({
+  isOpen,
+  onClose,
+  getProfile,
+}: LoginModalProps) {
   const [phone, setPhone] = useState("+7 ");
   const [agree, setAgree] = useState(false);
 
@@ -76,6 +82,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
         setTimeout(() => {
           onClose();
+          getProfile(data);
         }, 1500);
       } else {
         alert("Ошибка: " + JSON.stringify(data));
