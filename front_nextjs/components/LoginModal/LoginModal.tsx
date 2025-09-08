@@ -1,13 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import Button from "@/components/Button/Button";
 import styles from "./LoginModal.module.css";
-import { telegramLoginStart } from "@/lib/api/auth";
+import { telegramLoginFinish, telegramLoginStart } from "@/lib/api/auth";
 import CloseIcon from "@/assets/CloseIcon";
 import TelegramIcon from "@/assets/TelegramIcon";
 import Checkbox from "../Checkbox/Checkbox";
 import PhoneInput from "../PhoneInput/PhoneInput";
+import BackIcon from "@/assets/BackIcon";
+import Link from "next/link";
+import Cookies from "js-cookie";
+import { Check } from "lucide-react";
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -18,8 +22,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [phone, setPhone] = useState("+7 ");
   const [agree, setAgree] = useState(false);
 
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [botLink, setBotLink] = useState<string | null>(null);
+  const [step, setStep] = useState<"phone" | "waiting" | "finish">("phone");
+
+  const [sessionId, setSessionId] = useState<string>("");
+  const [botLink, setBotLink] = useState<string>("");
 
   console.log(phone);
 
@@ -43,39 +49,94 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
       console.error(err);
       alert("Произошла ошибка при запросе");
     }
+
+    setStep("waiting");
+  };
+  const handleTelegramFinish = async () => {
+    if (!sessionId) return alert("Сессия закончилась");
+
+    try {
+      const data = await telegramLoginFinish(sessionId);
+      if (data.token) {
+        Cookies.set("token", data.token, { expires: 2, secure: true });
+
+        setStep("finish");
+      } else {
+        alert("Ошибка: " + JSON.stringify(data));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Произошла ошибка при запросе");
+    }
   };
 
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        <Button
-          className={styles.closeButton}
-          onClick={() => onClose()}
-          icon={<CloseIcon width={20} height={20} />}
-        ></Button>
+        {step == "phone" && (
+          <>
+            <Button
+              className={styles.closeButton}
+              onClick={() => onClose()}
+              icon={<CloseIcon width={20} height={20} />}
+            ></Button>
 
-        <h2 className={styles.title}>Войти в профиль</h2>
-        <p className={styles.subtitle}>
-          Укажите номер телефона и выберите способ подтверждения
-        </p>
+            <h2 className={styles.title}>Войти в профиль</h2>
+            <p className={styles.subtitle}>
+              Укажите номер телефона и выберите способ подтверждения
+            </p>
 
-        <PhoneInput value={phone} onChange={setPhone} />
+            <PhoneInput value={phone} onChange={setPhone} />
 
-        <div className={styles.termsContainer}>
-          <Checkbox checked={agree} onChange={setAgree} />
-          <p className={styles.terms}>
-            Продолжая регистрацию, вы соглашаетесь с условиями сбора и обработки
-            персональных данных, правилами оферты и даете свое согласие на
-            получение новостей и уведомлений
-          </p>
-        </div>
+            <div className={styles.termsContainer}>
+              <Checkbox checked={agree} onChange={setAgree} />
+              <p className={styles.terms}>
+                Продолжая регистрацию, вы соглашаетесь с условиями сбора и
+                обработки персональных данных, правилами оферты и даете свое
+                согласие на получение новостей и уведомлений
+              </p>
+            </div>
 
-        <Button
-          className={styles.telegramButton}
-          onClick={() => handleTelegramLogin()}
-          title="Войти через Telegram"
-          icon={<TelegramIcon fill="#ffffff" />}
-        ></Button>
+            <Button
+              className={styles.telegramButton}
+              onClick={() => handleTelegramLogin()}
+              title="Войти через Telegram"
+              icon={<TelegramIcon fill="#ffffff" />}
+            ></Button>
+          </>
+        )}
+        {step == "waiting" && (
+          <>
+            <Button
+              className={styles.backButton}
+              onClick={() => setStep("phone")}
+              icon={<BackIcon width={20} height={20} />}
+            ></Button>
+
+            <h2 className={styles.title}>Ждём подтверждения в Telegram</h2>
+            <p className={styles.subtitle}>
+              Поделитесь контактом в Telegram c аккаунта с номером {phone} и
+              нажмите «Готово»
+            </p>
+            <Link href={botLink}>Перейти в Telegram</Link>
+            <Button
+              title="Готово"
+              className={styles.finishButton}
+              onClick={() => {
+                handleTelegramFinish();
+              }}
+            />
+          </>
+        )}
+        {step == "finish" && (
+          <>
+            <h2 className={styles.title}>Вы успешно зашли!</h2>
+            <p className={styles.subtitle}>{phone}</p>
+            <div className={styles.checkIcon}>
+              <Check></Check>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
