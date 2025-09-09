@@ -3,9 +3,9 @@
 import ProfileIcon from "@/assets/ProfileIcon";
 import Button from "@/components/Button/Button";
 import LoginModal from "@/components/LoginModal/LoginModal";
-import { ProfileResponse } from "@/lib/api/profile";
+import { ProfileResponse } from "@/libs/api/profile";
 import { useState } from "react";
-import { getProfile } from "@/lib/api/profile";
+import { getProfile } from "@/libs/api/profile";
 import { useRouter } from "next/navigation";
 
 export default function Home() {

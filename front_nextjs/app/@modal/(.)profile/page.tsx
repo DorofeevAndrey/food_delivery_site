@@ -1,6 +1,6 @@
 "use client";
 import ProfileModal from "@/components/ProfileModal/ProfileModal";
-import { getProfile, ProfileResponse } from "@/lib/api/profile";
+import { getProfile, ProfileResponse } from "@/libs/api/profile";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";

@@ -2,7 +2,7 @@
 
 import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
-import { ProfileResponse } from "@/lib/api/profile";
+import { ProfileResponse } from "@/libs/api/profile";
 import styles from "./ProfileModal.module.css";
 import ProfileIcon from "@/assets/ProfileIcon";
 import AddFriendIcon from "@/assets/AddFriendIcon";

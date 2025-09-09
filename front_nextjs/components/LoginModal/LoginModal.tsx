@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/components/Button/Button";
 import styles from "./LoginModal.module.css";
-import { telegramLoginFinish, telegramLoginStart } from "@/lib/api/auth";
+import { telegramLoginFinish, telegramLoginStart } from "@/libs/api/auth";
 import CloseIcon from "@/assets/CloseIcon";
 import TelegramIcon from "@/assets/TelegramIcon";
 import Checkbox from "../Checkbox/Checkbox";
