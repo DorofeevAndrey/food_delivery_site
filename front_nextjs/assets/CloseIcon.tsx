@@ -9,8 +9,8 @@ type Props = {
 };
 
 export default function CloseIcon({
-  width = 24,
-  height = 24,
+  width = 20,
+  height = 20,
   stroke = "#1C1C1C",
   className,
 }: Props) {

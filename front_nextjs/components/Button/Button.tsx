@@ -10,6 +10,7 @@ type ButtonProps = {
   icon?: ReactNode;
   className?: string;
   disable?: boolean;
+  variant?: "default" | "white" | "orange" | "grey";
 };
 
 export default function Button({
@@ -18,15 +19,16 @@ export default function Button({
   icon,
   className,
   disable,
+  variant = "default",
 }: ButtonProps) {
   return (
     <button
-      className={cn(styles.button, className)}
+      className={cn(styles.button, styles[variant], className)}
       onClick={onClick}
       disabled={disable}
     >
       {icon && <span className={styles.icon}>{icon}</span>}
-      <span>{title}</span>
+      <span className={styles.title}>{title}</span>
     </button>
   );
 }

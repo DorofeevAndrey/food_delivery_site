@@ -28,7 +28,7 @@ export default function Home() {
           <Button
             title={"Войти"}
             onClick={() => setIsLoginModalOpen(true)}
-            icon={<ProfileIcon width={24} height={24} />}
+            icon={<ProfileIcon />}
           />
           <LoginModal
             getProfile={fetchProfile}
@@ -41,14 +41,11 @@ export default function Home() {
         <>
           <Button
             onClick={() => router.push("/profile")}
-            icon={<ProfileIcon width={24} height={24} />}
+            icon={<ProfileIcon />}
           />
         </>
       )}
-      <Button
-        onClick={() => router.push("/profile")}
-        icon={<ProfileIcon width={24} height={24} />}
-      />
+      <Button onClick={() => router.push("/profile")} icon={<ProfileIcon />} />
     </div>
   );
 }

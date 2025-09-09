@@ -97,23 +97,23 @@ export default function LoginModal({
           <Button
             className={styles.closeButton}
             onClick={() => onClose()}
-            icon={<CloseIcon width={20} height={20} />}
+            icon={<CloseIcon />}
           ></Button>
 
           <h2 className={styles.title}>Войти в профиль</h2>
-          <p className={styles.subtitle}>
+          <span className={styles.subtitle}>
             Укажите номер телефона и выберите способ подтверждения
-          </p>
+          </span>
 
           <PhoneInput value={phone} onChange={setPhone} />
 
           <div className={styles.termsContainer}>
             <Checkbox checked={agree} onChange={setAgree} />
-            <p className={styles.terms}>
+            <span className={styles.terms}>
               Продолжая регистрацию, вы соглашаетесь с условиями сбора и
               обработки персональных данных, правилами оферты и даете свое
               согласие на получение новостей и уведомлений
-            </p>
+            </span>
           </div>
 
           <Button
@@ -122,6 +122,7 @@ export default function LoginModal({
             title="Войти через Telegram"
             icon={<TelegramIcon fill="#ffffff" />}
             disable={disable}
+            variant="orange"
           ></Button>
         </>
       )}
@@ -145,6 +146,7 @@ export default function LoginModal({
             onClick={() => {
               handleTelegramFinish();
             }}
+            variant="orange"
           />
         </>
       )}

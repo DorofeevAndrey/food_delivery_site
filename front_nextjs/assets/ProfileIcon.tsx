@@ -5,8 +5,8 @@ type Props = {
 };
 
 export default function ProfileIcon({
-  width = 24,
-  height = 24,
+  width = 20,
+  height = 20,
   fill = "currentColor",
 }: Props) {
   return (
