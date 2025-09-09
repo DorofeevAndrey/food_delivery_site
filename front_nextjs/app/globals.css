@@ -4,8 +4,10 @@
   --color-background: #ffffff;
   --color-foreground: #171717;
   --color-black: #1c1c1c;
+  --color-black-rgb: rgb(28, 28, 28);
   --color-white: #ffffff;
-  --color-grey: #c5c8d1;
+  --color-grey: #6d6d6d;
+  --color-grey-light: #a3a3a3;
   --color-orange: #eb3701;
   --color-green: #38eb01;
   --color-subtitle: #2d2e30;

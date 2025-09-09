@@ -21,7 +21,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={cn(styles.button, className)} // <- объединяем стили
+      className={cn(styles.button, className)}
       onClick={onClick}
       disabled={disable}
     >

@@ -15,7 +15,9 @@
 }
 
 .button:hover {
-  background-color: var(--color-grey); /* чуть темнее при наведении */
+  /* background-color: rgba(var(--color-black-rgb), 0.1); */
+  background-color: green;
+  color: rgba(var(--color-black-rgb), 0.7);
 }
 
 .button:disabled,
