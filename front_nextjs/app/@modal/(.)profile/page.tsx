@@ -1,28 +1,40 @@
 "use client";
-import LoginModal from "@/components/LoginModal/LoginModal";
-import { Token } from "@/lib/api/profile";
+import ProfileModal from "@/components/ProfileModal/ProfileModal";
+import { getProfile, ProfileResponse } from "@/lib/api/profile";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
-export default function ProfileModal() {
+export default function ProfilePage() {
+  const [userProfile, setUserProfile] = useState<ProfileResponse>();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = Cookies.get("token");
+      console.log(token);
+      if (!token) return;
+
+      try {
+        const profile = await getProfile(token);
+        setUserProfile(profile);
+      } catch (err) {
+        console.error("Ошибка загрузки профиля", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   const router = useRouter();
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded shadow w-96">
-        <h2>Профиль (модалка)</h2>
-        <p>Это модалка поверх главной страницы.</p>
-        <LoginModal
+    <>
+      {userProfile && (
+        <ProfileModal
+          userProfile={userProfile}
           isOpen={true}
-          onClose={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          getProfile={function (token: Token): void {
-            throw new Error("Function not implemented.");
-          }}
+          onClose={() => router.back()}
         />
-        <button onClick={() => router.back()} className="mt-4 btn-red">
-          Закрыть
-        </button>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

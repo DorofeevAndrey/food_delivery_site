@@ -12,12 +12,12 @@ import BackIcon from "@/assets/BackIcon";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { Check } from "lucide-react";
-import { Token } from "@/lib/api/profile";
+import Modal from "../Modal/Modal";
 
 type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  getProfile: (token: Token) => void;
+  getProfile: (token: string) => void;
 };
 
 export default function LoginModal({
@@ -45,10 +45,6 @@ export default function LoginModal({
     }
   }, [phone, agree]);
 
-  console.log(phone);
-
-  if (!isOpen) return null;
-
   const handleTelegramLogin = async () => {
     if (!phone) return alert("Введите номер телефона");
 
@@ -70,6 +66,7 @@ export default function LoginModal({
 
     setStep("waiting");
   };
+
   const handleTelegramFinish = async () => {
     if (!sessionId) return alert("Сессия закончилась");
 
@@ -94,74 +91,72 @@ export default function LoginModal({
   };
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
-        {step == "phone" && (
-          <>
-            <Button
-              className={styles.closeButton}
-              onClick={() => onClose()}
-              icon={<CloseIcon width={20} height={20} />}
-            ></Button>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      {step == "phone" && (
+        <>
+          <Button
+            className={styles.closeButton}
+            onClick={() => onClose()}
+            icon={<CloseIcon width={20} height={20} />}
+          ></Button>
 
-            <h2 className={styles.title}>Войти в профиль</h2>
-            <p className={styles.subtitle}>
-              Укажите номер телефона и выберите способ подтверждения
+          <h2 className={styles.title}>Войти в профиль</h2>
+          <p className={styles.subtitle}>
+            Укажите номер телефона и выберите способ подтверждения
+          </p>
+
+          <PhoneInput value={phone} onChange={setPhone} />
+
+          <div className={styles.termsContainer}>
+            <Checkbox checked={agree} onChange={setAgree} />
+            <p className={styles.terms}>
+              Продолжая регистрацию, вы соглашаетесь с условиями сбора и
+              обработки персональных данных, правилами оферты и даете свое
+              согласие на получение новостей и уведомлений
             </p>
+          </div>
 
-            <PhoneInput value={phone} onChange={setPhone} />
+          <Button
+            className={styles.telegramButton}
+            onClick={() => handleTelegramLogin()}
+            title="Войти через Telegram"
+            icon={<TelegramIcon fill="#ffffff" />}
+            disable={disable}
+          ></Button>
+        </>
+      )}
+      {step == "waiting" && (
+        <>
+          <Button
+            className={styles.backButton}
+            onClick={() => setStep("phone")}
+            icon={<BackIcon width={20} height={20} />}
+          ></Button>
 
-            <div className={styles.termsContainer}>
-              <Checkbox checked={agree} onChange={setAgree} />
-              <p className={styles.terms}>
-                Продолжая регистрацию, вы соглашаетесь с условиями сбора и
-                обработки персональных данных, правилами оферты и даете свое
-                согласие на получение новостей и уведомлений
-              </p>
-            </div>
-
-            <Button
-              className={styles.telegramButton}
-              onClick={() => handleTelegramLogin()}
-              title="Войти через Telegram"
-              icon={<TelegramIcon fill="#ffffff" />}
-              disable={disable}
-            ></Button>
-          </>
-        )}
-        {step == "waiting" && (
-          <>
-            <Button
-              className={styles.backButton}
-              onClick={() => setStep("phone")}
-              icon={<BackIcon width={20} height={20} />}
-            ></Button>
-
-            <h2 className={styles.title}>Ждём подтверждения в Telegram</h2>
-            <p className={styles.subtitle}>
-              Поделитесь контактом в Telegram c аккаунта с номером {phone} и
-              нажмите «Готово»
-            </p>
-            <Link href={botLink}>Перейти в Telegram</Link>
-            <Button
-              title="Готово"
-              className={styles.finishButton}
-              onClick={() => {
-                handleTelegramFinish();
-              }}
-            />
-          </>
-        )}
-        {step == "finish" && (
-          <>
-            <h2 className={styles.title}>Вы успешно зашли!</h2>
-            <p className={styles.subtitle}>{phone}</p>
-            <div className={styles.checkIcon}>
-              <Check></Check>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+          <h2 className={styles.title}>Ждём подтверждения в Telegram</h2>
+          <p className={styles.subtitle}>
+            Поделитесь контактом в Telegram c аккаунта с номером {phone} и
+            нажмите «Готово»
+          </p>
+          <Link href={botLink}>Перейти в Telegram</Link>
+          <Button
+            title="Готово"
+            className={styles.finishButton}
+            onClick={() => {
+              handleTelegramFinish();
+            }}
+          />
+        </>
+      )}
+      {step == "finish" && (
+        <>
+          <h2 className={styles.title}>Вы успешно зашли!</h2>
+          <p className={styles.subtitle}>{phone}</p>
+          <div className={styles.checkIcon}>
+            <Check></Check>
+          </div>
+        </>
+      )}
+    </Modal>
   );
 }
