@@ -12,10 +12,10 @@
   height: 40px;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
-  line-height: 20px;
-  letter-spacing: -0.15px;
-  gap: 6px;
-  padding: 0px 10px;
+}
+
+.withGap {
+  gap: 8px;
 }
 
 .button:hover {
@@ -23,7 +23,6 @@
 }
 
 .orange {
-  gap: 8px;
   height: 48px;
   font-size: 17px;
   background-color: var(--color-orange);
@@ -36,6 +35,38 @@
 
 .orange:disabled {
   background-color: var(--color-orange);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.white {
+  height: auto;
+  font-size: 15px;
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
+.white:hover {
+  background-color: var(--color-white);
+}
+
+.white:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.grey {
+  height: auto;
+  font-size: 15px;
+  background-color: var(--interactiveSecondary);
+  color: var(--color-black);
+}
+
+.grey:hover {
+  background-color: var(--interactiveSecondary);
+}
+
+.grey :disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }

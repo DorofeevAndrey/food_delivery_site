@@ -28,7 +28,7 @@ export default function LoginModal({
   const [phone, setPhone] = useState("+7 ");
   const [agree, setAgree] = useState(false);
 
-  const [disable, setDisable] = useState<boolean>(true);
+  const [disableAuth, setDisableAuth] = useState<boolean>(true);
 
   const [step, setStep] = useState<"phone" | "waiting" | "finish">("phone");
 
@@ -39,9 +39,9 @@ export default function LoginModal({
     const digits = phone.replace(/\D/g, "");
 
     if (digits.length === 11 && agree) {
-      setDisable(false);
+      setDisableAuth(false);
     } else {
-      setDisable(true);
+      setDisableAuth(true);
     }
   }, [phone, agree]);
 
@@ -98,6 +98,7 @@ export default function LoginModal({
             className={styles.closeButton}
             onClick={() => onClose()}
             icon={<CloseIcon />}
+            variant="white"
           ></Button>
 
           <h2 className={styles.title}>Войти в профиль</h2>
@@ -121,7 +122,7 @@ export default function LoginModal({
             onClick={() => handleTelegramLogin()}
             title="Войти через Telegram"
             icon={<TelegramIcon fill="#ffffff" />}
-            disable={disable}
+            disable={disableAuth}
             variant="orange"
           ></Button>
         </>
@@ -132,6 +133,7 @@ export default function LoginModal({
             className={styles.backButton}
             onClick={() => setStep("phone")}
             icon={<BackIcon width={20} height={20} />}
+            variant="white"
           ></Button>
 
           <h2 className={styles.title}>Ждём подтверждения в Telegram</h2>

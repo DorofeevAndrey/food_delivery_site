@@ -21,9 +21,15 @@ export default function Button({
   disable,
   variant = "default",
 }: ButtonProps) {
+  const hasBoth = icon && title;
   return (
     <button
-      className={cn(styles.button, styles[variant], className)}
+      className={cn(
+        styles.button,
+        styles[variant],
+        { [styles.withGap]: hasBoth }, // добавляем класс только если оба есть
+        className
+      )}
       onClick={onClick}
       disabled={disable}
     >

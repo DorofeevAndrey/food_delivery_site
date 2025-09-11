@@ -37,12 +37,14 @@ export default function ProfileModal({
                 className={styles.buttonName}
                 title={userProfile.first_name}
                 onClick={() => router.push("/profile?edit")}
+                variant="white"
               />
             ) : (
               <Button
                 className={styles.buttonName}
                 title="Ваше имя"
                 onClick={() => router.push("/profile?edit")}
+                variant="white"
               />
             )}
             <span className={styles.phone}>{userProfile.phone}</span>
@@ -53,26 +55,31 @@ export default function ProfileModal({
               className={styles.filledButton}
               icon={<AddFriendIcon />}
               title="Приглашайте друзей"
+              variant="white"
             />
             <Button
               className={styles.filledButton}
               icon={<MyOrderIcon />}
               title="Мои заказы"
+              variant="white"
             />
             <Button
               className={styles.filledButton}
               icon={<MyAddressIcon />}
               title="Мои адреса"
+              variant="white"
             />
             <Button
               className={styles.filledButton}
               icon={<ProfileIcon />}
               title="Мои данные"
+              variant="white"
             />
             <Button
               className={styles.filledButton}
               icon={<BankCardsIcon />}
               title="Банковские карты"
+              variant="white"
             />
           </div>
           <div className={styles.quitButtonContainer}>
@@ -80,6 +87,7 @@ export default function ProfileModal({
               className={styles.quitButton}
               icon={<QuitIcon />}
               title="Выйти"
+              variant="white"
             />
           </div>
         </>
