@@ -11,6 +11,9 @@ import BankCardsIcon from "@/assets/BankCardsIcon";
 import MyAddressIcon from "@/assets/MyAddressIcon";
 import QuitIcon from "@/assets/QuitIcon";
 import { useSearchParams, useRouter } from "next/navigation";
+import BackIcon from "@/assets/BackIcon";
+import Input from "../Input/Input";
+import { useState } from "react";
 
 type ProfileModalProps = {
   isOpen: boolean;
@@ -26,27 +29,19 @@ export default function ProfileModal({
   const searchParams = useSearchParams();
   const isEdit = searchParams.get("edit") !== null;
   const router = useRouter();
+  const [firstName, setFirstName] = useState<string>("");
 
   return (
-    <Modal className={styles.modal} isOpen={isOpen} onClose={onClose}>
+    <>
       {!isEdit ? (
-        <>
+        <Modal className={styles.modal} isOpen={isOpen} onClose={onClose}>
           <div className={styles.headerContainer}>
-            {userProfile.first_name ? (
-              <Button
-                className={styles.buttonName}
-                title={userProfile.first_name}
-                onClick={() => router.push("/profile?edit")}
-                variant="white"
-              />
-            ) : (
-              <Button
-                className={styles.buttonName}
-                title="Ваше имя"
-                onClick={() => router.push("/profile?edit")}
-                variant="white"
-              />
-            )}
+            <Button
+              className={styles.buttonName}
+              title={userProfile.first_name || "Ваше имя"}
+              onClick={() => router.push("/profile?edit")}
+              variant="white"
+            />
             <span className={styles.phone}>{userProfile.phone}</span>
           </div>
 
@@ -82,6 +77,7 @@ export default function ProfileModal({
               variant="white"
             />
           </div>
+
           <div className={styles.quitButtonContainer}>
             <Button
               className={styles.quitButton}
@@ -90,12 +86,40 @@ export default function ProfileModal({
               variant="white"
             />
           </div>
-        </>
+        </Modal>
       ) : (
-        <>
+        <Modal isOpen={isOpen} onClose={onClose} className={styles.modalEdit}>
+          <Button
+            className={styles.backToProfileButton}
+            icon={<BackIcon />}
+            variant="white"
+            onClick={() => router.push("/profile")}
+          />
           <h2 className={styles.h2}>Профиль</h2>
-        </>
+          <Input
+            id="tel"
+            placeholder="Телефон"
+            value={userProfile.phone}
+            onChange={() => {}}
+            type="name"
+            disable={true}
+          />
+          <Input
+            id="name"
+            placeholder="Имя"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            type="name"
+          />
+          <Input
+            id="name"
+            placeholder="Дата рождения"
+            value={userProfile.phone}
+            onChange={(e) => setFirstName(e.target.value)}
+            type="name"
+          />
+        </Modal>
       )}
-    </Modal>
+    </>
   );
 }

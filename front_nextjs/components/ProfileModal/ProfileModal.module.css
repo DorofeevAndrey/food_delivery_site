@@ -20,6 +20,10 @@
   }
 }
 
+.buttonName:hover {
+  color: rgba(var(--color-black-rgb), 0.6);
+}
+
 .buttonsContainer {
   width: 100%;
   display: flex;
@@ -62,4 +66,24 @@
 
 .phone {
   color: rgba(var(--color-black-rgb), 0.7);
+}
+
+.modalEdit {
+  padding: 20px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+}
+
+.h2 {
+  margin-right: 50px;
+  margin-bottom: 32px;
+  margin-left: 50px;
+  font-family: "H3", var(--default-fonts);
+}
+
+.backToProfileButton {
+  position: absolute;
+  left: 16px;
+  top: 16px;
 }

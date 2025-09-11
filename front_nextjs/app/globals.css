@@ -12,12 +12,12 @@
 
   --accentsSuccess: #00a980;
 
+  --interactiveSecondary: rgba(28, 28, 28, 0.05);
+  --interactiveLight: rgba(28, 28, 28, 0.1);
+
   --textError: #f23030;
   --textPromo: #ffde69;
   --textLight: rgba(28, 28, 28, 0.3);
-
-  --interactiveSecondary: rgba(28, 28, 28, 0.05);
-
   --colors-kaspi: #f14635;
   --colors-sbp: #1d1346;
   --colors-sbp-dark: #f5f1e8;
