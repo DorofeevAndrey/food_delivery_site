@@ -1,3 +1,4 @@
+import { BlobOptions } from "buffer";
 import styles from "./Input.module.css";
 import cn from "classnames";
 import { ChangeEvent } from "react";
@@ -9,9 +10,10 @@ type InputProps = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   id?: string;
-  minLength?: number;
   autoComplete?: string;
   disable?: boolean;
+  onClick?: () => void;
+  readOnly?: boolean;
 };
 
 export default function Input({
@@ -22,8 +24,9 @@ export default function Input({
   value,
   onChange,
   id,
-  minLength,
   autoComplete = "off",
+  onClick,
+  readOnly,
 }: InputProps) {
   return (
     <div className={cn(styles.wrapper, className)}>
@@ -34,9 +37,10 @@ export default function Input({
         value={value}
         onChange={onChange}
         disabled={disable}
-        minLength={minLength}
         autoComplete={autoComplete}
-        placeholder=" " // ставим пробел, чтобы браузер не показывал дефолтный placeholder
+        placeholder=" "
+        onClick={onClick}
+        readOnly={readOnly} // ставим пробел, чтобы браузер не показывал дефолтный placeholder
       />
       <label htmlFor={id} className={styles.label}>
         {placeholder}

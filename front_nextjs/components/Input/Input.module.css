@@ -39,7 +39,7 @@
 /* когда фокус или есть текст */
 .input:focus + .label,
 .input.filled + .label {
-  top: 8px;
+  top: 10px;
   left: 8px;
   font-size: 12px;
   padding: 0 4px;

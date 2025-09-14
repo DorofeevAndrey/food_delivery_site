@@ -16,3 +16,9 @@ class UserResponseSchema(BaseModel):
 
 class TokenRequestSchema(BaseModel):
     token: str
+
+class UserUpdateSchema(BaseModel):
+    first_name: str | None = None
+    date_of_birth: date | None = None
+    email: str | None = None
+    gender: str | None = None

@@ -22,12 +22,14 @@ export default function Button({
   variant = "default",
 }: ButtonProps) {
   const hasBoth = icon && title;
+  const iconOnly = icon && !title;
   return (
     <button
       className={cn(
         styles.button,
         styles[variant],
-        { [styles.withGap]: hasBoth }, // добавляем класс только если оба есть
+        { [styles.withGap]: hasBoth },
+        { [styles.iconOnly]: iconOnly },
         className
       )}
       onClick={onClick}

@@ -1,5 +1,3 @@
-import { Token } from "./profile";
-
 type TelegramLoginResponse = {
   session_id: string;
   bot_link: string;
@@ -34,7 +32,7 @@ export async function telegramLoginStart(
   return data;
 }
 
-export async function telegramLoginFinish(session_id: string): Promise<Token> {
+export async function telegramLoginFinish(session_id: string): Promise<string> {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const res = await fetch(`${baseUrl}/auth/finish`, {
     method: "POST",
@@ -46,6 +44,6 @@ export async function telegramLoginFinish(session_id: string): Promise<Token> {
     throw new Error("Ошибка сети");
   }
 
-  const data = await res.json();
-  return data;
+  const token = await res.json();
+  return token.token;
 }

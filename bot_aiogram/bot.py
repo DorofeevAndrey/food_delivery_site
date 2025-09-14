@@ -71,7 +71,6 @@ async def handle_contact(message: types.Message):
     phone = message.contact.phone_number
     formatted_phone = clean_phone(phone)
     payload = {"phone": formatted_phone, "session_id": session_id }
-    print(formatted_phone, session_id)
 
     async with aiohttp.ClientSession() as session:
         async with session.post(f"{settings.BACKEND_URL}/auth/verify", json=payload) as resp:

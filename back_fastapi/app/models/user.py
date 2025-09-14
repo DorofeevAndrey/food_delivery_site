@@ -19,7 +19,6 @@ class User(Base):
 
     # Аутентификация
     phone = Column(String, unique=True, index=True, nullable=False)   
-    telegram_id = Column(String, unique=True, index=True, nullable=True)  
 
     # Личные данные
     first_name = Column(String, nullable=True)

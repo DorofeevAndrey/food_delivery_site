@@ -9,13 +9,17 @@
   padding: 0px;
   border-radius: var(--buttonSmallBorderRadius);
   transition: background-color 0.3s;
-  height: 40px;
+  height: 36px;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
 }
 
 .withGap {
   gap: 8px;
+}
+
+.iconOnly {
+  padding: 0px 8px;
 }
 
 .button:hover {
@@ -27,6 +31,7 @@
   font-size: 17px;
   background-color: var(--color-orange);
   color: var(--color-white);
+  width: 100%;
 }
 
 .orange:hover {

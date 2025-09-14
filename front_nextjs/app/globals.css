@@ -9,13 +9,13 @@
 
   --textPrimary: #1c1c1c;
   --textSecondary: rgba(28, 28, 28, 0.6);
+  --textError: #f23030;
 
   --accentsSuccess: #00a980;
 
   --interactiveSecondary: rgba(28, 28, 28, 0.05);
   --interactiveLight: rgba(28, 28, 28, 0.1);
 
-  --textError: #f23030;
   --textPromo: #ffde69;
   --textLight: rgba(28, 28, 28, 0.3);
   --colors-kaspi: #f14635;

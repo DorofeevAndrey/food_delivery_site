@@ -71,18 +71,18 @@ export default function LoginModal({
     if (!sessionId) return alert("Сессия закончилась");
 
     try {
-      const data = await telegramLoginFinish(sessionId);
-      if (data.token) {
-        Cookies.set("token", data.token, { expires: 2, secure: true });
+      const token = await telegramLoginFinish(sessionId);
+      if (token) {
+        Cookies.set("token", token, { expires: 2, secure: true });
 
         setStep("finish");
 
         setTimeout(() => {
           onClose();
-          getProfile(data);
+          getProfile(token);
         }, 1500);
       } else {
-        alert("Ошибка: " + JSON.stringify(data));
+        alert("Ошибка: " + JSON.stringify(token));
       }
     } catch (err) {
       console.error(err);
