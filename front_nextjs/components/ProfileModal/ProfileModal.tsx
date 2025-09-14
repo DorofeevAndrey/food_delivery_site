@@ -6,7 +6,6 @@ import Input from "../Input/Input";
 import {
   deleteProfile,
   patchProfile,
-  ProfileResponse,
   ProfileUpdateRequest,
 } from "@/libs/api/profile";
 import styles from "./ProfileModal.module.css";
@@ -22,31 +21,38 @@ import ProfileIcon from "@/assets/ProfileIcon";
 import BankCardsIcon from "@/assets/BankCardsIcon";
 import QuitIcon from "@/assets/QuitIcon";
 import BackIcon from "@/assets/BackIcon";
+import { useUser } from "@/contexts/UserContext";
 
 type ProfileModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  userProfile: ProfileResponse;
 };
 
-export default function ProfileModal({
-  userProfile,
-  isOpen,
-  onClose,
-}: ProfileModalProps) {
+export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
+  const { user, setUser, logout } = useUser();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const isEdit = searchParams.get("edit") !== null;
 
-  const [firstName, setFirstName] = useState(userProfile.first_name || "");
+  const [firstName, setFirstName] = useState(user!.first_name || "");
 
-  const [email, setEmail] = useState(userProfile.email || "");
+  const [email, setEmail] = useState(user!.email || "");
   const [emailError, setEmailError] = useState("");
 
-  const [gender, setGender] = useState(userProfile.gender || "");
+  const [gender, setGender] = useState(user!.gender || "");
   const [openGender, setOpenGender] = useState(false);
 
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const formatDate = (date: Date): string => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // месяцы с 0
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  };
+
+  const dateStr = formatDate(new Date(user!.date_of_birth));
+
+  const [dateOfBirth, setDateOfBirth] = useState(dateStr || "");
   const [dateError, setDateError] = useState(false);
 
   const genderRef = useRef<HTMLDivElement>(null);
@@ -106,7 +112,7 @@ export default function ProfileModal({
   const handleSaveProfile = async () => {
     if (saveDisabled) return;
     const token = Cookies.get("token");
-    const userId = userProfile.id;
+    const userId = user!.id;
 
     const [day, month, year] = dateOfBirth.split(".");
     const formattedDate = `${year}-${month}-${day}`; // <-- чистая дата
@@ -126,9 +132,15 @@ export default function ProfileModal({
     }
   };
 
+  // Выход из профиля
+  const handleQuitFromProfile = () => {
+    logout();
+    router.push("/");
+  };
+
   const handleDeleteUser = async () => {
     const token = Cookies.get("token");
-    const userId = userProfile.id;
+    const userId = user!.id;
 
     try {
       const deleted = await deleteProfile(token!, userId);
@@ -149,11 +161,11 @@ export default function ProfileModal({
           <div className={styles.headerContainer}>
             <Button
               className={styles.buttonName}
-              title={userProfile.first_name || "Ваше имя"}
+              title={user!.first_name || "Ваше имя"}
               onClick={() => router.push("/profile?edit")}
               variant="white"
             />
-            <span className={styles.phone}>{userProfile.phone}</span>
+            <span className={styles.phone}>{user!.phone}</span>
           </div>
 
           <div className={styles.buttonsContainer}>
@@ -195,6 +207,7 @@ export default function ProfileModal({
               icon={<QuitIcon />}
               title="Выйти"
               variant="white"
+              onClick={handleQuitFromProfile}
             />
           </div>
         </Modal>
@@ -211,7 +224,7 @@ export default function ProfileModal({
           <Input
             id="tel"
             placeholder="Телефон"
-            value={userProfile.phone}
+            value={user!.phone}
             onChange={() => {}}
             type="tel"
             disable
