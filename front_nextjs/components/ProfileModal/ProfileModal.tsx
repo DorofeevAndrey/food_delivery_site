@@ -21,7 +21,7 @@ import ProfileIcon from "@/assets/ProfileIcon";
 import BankCardsIcon from "@/assets/BankCardsIcon";
 import QuitIcon from "@/assets/QuitIcon";
 import BackIcon from "@/assets/BackIcon";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/hooks/useUser";
 
 type ProfileModalProps = {
   isOpen: boolean;

@@ -6,7 +6,7 @@ import LoginModal from "@/components/LoginModal/LoginModal";
 import { useState } from "react";
 import { getProfile } from "@/libs/api/profile";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/hooks/useUser";
 
 export default function Home() {
   const { user, setUser, logout, refreshUser } = useUser();

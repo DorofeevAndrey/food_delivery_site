@@ -17,7 +17,9 @@ type UserContextType = {
   refreshUser: () => Promise<void>;
 };
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(
+  undefined
+);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<ProfileResponse | null>(null);
@@ -49,11 +51,4 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </UserContext.Provider>
   );
-};
-
-export const useUser = () => {
-  const context = useContext(UserContext);
-  if (!context)
-    throw new Error("useUser должен использоваться внутри UserProvider");
-  return context;
 };

@@ -1,10 +1,7 @@
 "use client";
 import ProfileModal from "@/components/ProfileModal/ProfileModal";
-import { getProfile, ProfileResponse } from "@/libs/api/profile";
+import { useUser } from "@/hooks/useUser";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import { useUser } from "@/contexts/UserContext";
 
 export default function ProfilePageModal() {
   const { user, setUser } = useUser();
