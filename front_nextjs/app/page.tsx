@@ -7,6 +7,7 @@ import { useState } from "react";
 import { getProfile } from "@/libs/api/profile";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/useUser";
+import Header from "@/components/Header/Header";
 
 export default function Home() {
   const { user, setUser, logout, refreshUser } = useUser();
@@ -43,6 +44,7 @@ export default function Home() {
         </>
       )}
       <Button onClick={() => router.push("/profile")} icon={<ProfileIcon />} />
+      <Header />
     </div>
   );
 }

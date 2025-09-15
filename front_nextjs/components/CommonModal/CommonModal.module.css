@@ -1,0 +1,30 @@
+.headerModal {
+  padding: 24px 15px;
+
+  display: flex;
+  align-items: start;
+}
+
+.header {
+  width: 100%;
+  text-align: start;
+}
+
+.addressContainer {
+  width: 100%;
+}
+
+.messangerContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.footerContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.downloadContainer {
+  display: flex;
+  flex-direction: row;
+}

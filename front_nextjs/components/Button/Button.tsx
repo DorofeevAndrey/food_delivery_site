@@ -35,7 +35,7 @@ export default function Button({
       onClick={onClick}
       disabled={disable}
     >
-      {icon && <span className={styles.icon}>{icon}</span>}
+      {icon && icon}
       <span className={styles.title}>{title}</span>
     </button>
   );
