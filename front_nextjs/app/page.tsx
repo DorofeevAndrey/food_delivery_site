@@ -43,7 +43,6 @@ export default function Home() {
           />
         </>
       )}
-      <Button onClick={() => router.push("/profile")} icon={<ProfileIcon />} />
       <Header />
     </div>
   );

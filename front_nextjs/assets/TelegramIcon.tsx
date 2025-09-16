@@ -1,29 +1,28 @@
-// components/TelegramIcon.tsx
 import React from "react";
 
-type Props = {
+type TelegramIconProps = {
   width?: number | string;
   height?: number | string;
-  fill?: string;
   className?: string;
+  fill?: string;
 };
 
-export default function TelegramIcon({
+export const TelegramIcon: React.FC<TelegramIconProps> = ({
   width = 24,
   height = 24,
-  fill = "var(--interactiveBasePrimary)", // как в оригинальном svg
   className,
-}: Props) {
+  fill = "currentColor",
+}) => {
   return (
     <svg
       width={width}
       height={height}
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       className={className}
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <g clipPath="url(#clip0)">
+      <g clipPath="url(#clip0_13478_102673)">
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -32,10 +31,10 @@ export default function TelegramIcon({
         />
       </g>
       <defs>
-        <clipPath id="clip0">
+        <clipPath id="clip0_13478_102673">
           <rect width="24" height="24" fill="white" />
         </clipPath>
       </defs>
     </svg>
   );
-}
+};
