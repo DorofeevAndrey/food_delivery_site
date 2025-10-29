@@ -5,7 +5,7 @@ import Button from "@/components/Button/Button";
 import styles from "./LoginModal.module.css";
 import { telegramLoginFinish, telegramLoginStart } from "@/libs/api/auth";
 import CloseIcon from "@/assets/CloseIcon";
-import TelegramIcon from "@/assets/TelegramIcon";
+import { TelegramIcon } from "@/assets/TelegramIcon";
 import Checkbox from "../Checkbox/Checkbox";
 import PhoneInput from "../PhoneInput/PhoneInput";
 import BackIcon from "@/assets/BackIcon";
