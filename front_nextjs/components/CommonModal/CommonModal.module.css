@@ -1,8 +1,12 @@
-.headerModal {
+.commonModal {
   padding: 24px 15px;
-
   display: flex;
   align-items: start;
+}
+
+/* Padding offsets to combine with Modal.overlayTopLeft */
+.commonOffsetPadding {
+  padding: 50px 25px;
 }
 
 .header {

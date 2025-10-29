@@ -9,6 +9,7 @@ type ModalProps = {
   onClose: () => void;
   children: ReactNode;
   className?: string;
+  overlayClassName?: string;
 };
 
 export default function Modal({
@@ -16,11 +17,12 @@ export default function Modal({
   isOpen,
   onClose,
   children,
+  overlayClassName,
 }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={cn(styles.overlay, overlayClassName)} onClick={onClose}>
       <div
         className={cn(styles.modal, className)}
         onClick={(e) => e.stopPropagation()} // чтобы клик внутри окна не закрывал

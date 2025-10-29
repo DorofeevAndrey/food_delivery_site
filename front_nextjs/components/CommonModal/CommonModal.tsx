@@ -2,10 +2,30 @@ import ProfileIcon from "@/assets/ProfileIcon";
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
 import styles from "./CommonModal.module.css";
+import modalStyles from "../Modal/Modal.module.css";
+import cn from "classnames";
 
-export default function CommonModal() {
+type CommonModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  className?: string;
+};
+
+export default function CommonModal({
+  isOpen,
+  onClose,
+  className,
+}: CommonModalProps) {
   return (
-    <Modal isOpen={true} onClose={() => {}} className={styles.headerModal}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className={cn(styles.commonModal, className)}
+      overlayClassName={cn(
+        modalStyles.overlayTopLeft,
+        styles.commonOffsetPadding
+      )}
+    >
       <h1 className={styles.header}>Меню</h1>
       <Button variant="white" title="Частые вопросы" />
       <div className={styles.addressContainer}>

@@ -15,6 +15,7 @@ type UserContextType = {
   setUser: (user: ProfileResponse | null) => void;
   logout: () => void;
   refreshUser: () => Promise<void>;
+  isUserLoading: boolean;
 };
 
 export const UserContext = createContext<UserContextType | undefined>(
@@ -24,14 +25,22 @@ export const UserContext = createContext<UserContextType | undefined>(
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<ProfileResponse | null>(null);
 
+  const [isUserLoading, setIsUserLoading] = useState(true);
+
   const logout = () => {
     Cookies.remove("token");
     setUser(null);
   };
 
   const refreshUser = async () => {
+    setIsUserLoading(true);
+
     const token = Cookies.get("token");
-    if (!token) return;
+    if (!token) {
+      setUser(null);
+      setIsUserLoading(false);
+      return;
+    }
 
     try {
       const profile = await getProfile(token);
@@ -39,6 +48,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     } catch (err) {
       console.error("Ошибка при загрузке профиля", err);
       logout();
+    } finally {
+      setIsUserLoading(false);
     }
   };
 
@@ -47,7 +58,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout, refreshUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, logout, refreshUser, isUserLoading }}
+    >
       {children}
     </UserContext.Provider>
   );

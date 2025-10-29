@@ -91,7 +91,7 @@ export default function LoginModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} className={styles.containerModal}>
       {step == "phone" && (
         <>
           <Button
@@ -141,7 +141,9 @@ export default function LoginModal({
             Поделитесь контактом в Telegram c аккаунта с номером {phone} и
             нажмите «Готово»
           </p>
-          <Link href={botLink}>Перейти в Telegram</Link>
+          <Link className={styles.botLink} href={botLink}>
+            Перейти в Telegram
+          </Link>
           <Button
             title="Готово"
             className={styles.finishButton}

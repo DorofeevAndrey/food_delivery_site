@@ -1,8 +1,13 @@
-.modal {
+.profileModal {
   padding: 0px;
   display: flex;
   flex-direction: column;
   width: 350px;
+}
+
+/* Padding offsets to combine with Modal.overlayTopRight */
+.profileOffsetPadding {
+  padding: 50px 100px;
 }
 
 .headerContainer {
@@ -69,6 +74,9 @@
 }
 
 .modalEdit {
+  position: absolute;
+  top: 50px;
+  right: 100px;
   padding: 20px 40px 40px;
   display: flex;
   flex-direction: column;

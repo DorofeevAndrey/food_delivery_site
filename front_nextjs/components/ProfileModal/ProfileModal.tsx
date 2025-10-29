@@ -1,6 +1,7 @@
 "use client";
 
 import Modal from "../Modal/Modal";
+import cn from "classnames";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import {
@@ -9,6 +10,7 @@ import {
   ProfileUpdateRequest,
 } from "@/libs/api/profile";
 import styles from "./ProfileModal.module.css";
+import modalStyles from "../Modal/Modal.module.css";
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -157,7 +159,15 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   return (
     <>
       {!isEdit ? (
-        <Modal className={styles.modal} isOpen={isOpen} onClose={onClose}>
+        <Modal
+          className={styles.profileModal}
+          isOpen={isOpen}
+          onClose={onClose}
+          overlayClassName={cn(
+            modalStyles.overlayTopRight,
+            styles.profileOffsetPadding
+          )}
+        >
           <div className={styles.headerContainer}>
             <Button
               className={styles.buttonName}
@@ -212,7 +222,15 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           </div>
         </Modal>
       ) : (
-        <Modal isOpen={isOpen} onClose={onClose} className={styles.modalEdit}>
+        <Modal
+          isOpen={isOpen}
+          onClose={onClose}
+          className={styles.modalEdit}
+          overlayClassName={cn(
+            modalStyles.overlayTopRight,
+            styles.profileOffsetPadding
+          )}
+        >
           <Button
             className={styles.backToProfileButton}
             icon={<BackIcon />}
