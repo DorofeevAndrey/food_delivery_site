@@ -11,32 +11,59 @@ import Button from "../Button/Button";
 import NotificationIcon from "@/assets/NotificationIcon";
 import cn from "classnames";
 import NotificationMessageIcon from "@/assets/NotificationMessageIcon";
+import { useUser } from "@/hooks/useUser";
+import { getNotifications, markNotificationRead, NotificationDto } from "@/libs/api/notification";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
 
-const mock: NotificationData[] = [
-  {
-    id: "1",
-    title: "Скидка на комбо",
-    text: "Только сегодня: -20% на все комбо меню.",
-    createdAt: "Сегодня, 12:45",
-    icon: <NotificationIcon />,
-    actionLabel: "Перейти",
-  },
-  {
-    id: "2",
-    title: "Доставка стала быстрее",
-    text: "Мы обновили маршруты — ждите курьера быстрее.",
-    createdAt: "Вчера, 18:10",
-    icon: <NotificationIcon />,
-    actionLabel: "Перейти",
-  },
-];
+// const mock: NotificationData[] = [
+//   {
+//     id: "1",
+//     title: "Скидка на комбо",
+//     text: "Только сегодня: -20% на все комбо меню.",
+//     createdAt: "Сегодня, 12:45",
+//     icon: <NotificationIcon />,
+//     actionLabel: "Перейти",
+//   },
+//   {
+//     id: "2",
+//     title: "Доставка стала быстрее",
+//     text: "Мы обновили маршруты — ждите курьера быстрее.",
+//     createdAt: "Вчера, 18:10",
+//     icon: <NotificationIcon />,
+//     actionLabel: "Перейти",
+//   },
+// ];
 
 export default function NotificationsModal({ isOpen, onClose }: Props) {
+  const [items, setItems] = useState<NotificationDto[]>([]);
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const token = Cookies.get("token"); 
+
+    if (!token) return;
+
+    setLoading(true);
+    getNotifications(token)
+      .then(setItems)
+      .finally(() => setLoading(false));
+  }, [isOpen]);
+
+  const handleAction = async (id: number) => {
+    const token = Cookies.get("token");
+    if (!token) return;
+
+    const updated = await markNotificationRead(token, id, true);
+    setItems((prev) => prev.map((n) => (n.id === id ? updated : n)));
+  };
   return (
     <Modal
       isOpen={isOpen}
@@ -53,9 +80,22 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
       </div>
 
       <div className={styles.list}>
-        {mock.map((n) => (
-          <NotificationItem key={n.id} data={n} onAction={() => {}} />
-        ))}
+        {loading && <div>Загружаем...</div>}
+        {!loading &&
+          items.map((n) => (
+            <NotificationItem
+              key={n.id}
+              data={{
+                id: String(n.id),
+                title: n.title,
+                text: n.text,
+                createdAt: new Date(n.created_at).toLocaleString("ru-RU"),
+                icon: <NotificationIcon />,
+                actionLabel: n.is_read ? undefined : "Перейти",
+              }}
+              onAction={() => handleAction(n.id)}
+            />
+          ))}
       </div>
     </Modal>
   );

@@ -8,6 +8,7 @@ from app.core.config import settings
 from app.core.database import Base
 # Импортируем модель User
 from app.models.user import User
+from app.models.notification import Notification
 
 # Загружаем конфигурацию из alembic.ini
 config = context.config
