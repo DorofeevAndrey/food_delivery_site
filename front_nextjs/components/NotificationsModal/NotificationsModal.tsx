@@ -12,7 +12,11 @@ import NotificationIcon from "@/assets/NotificationIcon";
 import cn from "classnames";
 import NotificationMessageIcon from "@/assets/NotificationMessageIcon";
 import { useUser } from "@/hooks/useUser";
-import { getNotifications, markNotificationRead, NotificationDto } from "@/libs/api/notification";
+import {
+  getNotifications,
+  markNotificationRead,
+  NotificationDto,
+} from "@/libs/api/notification";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
@@ -21,33 +25,13 @@ type Props = {
   onClose: () => void;
 };
 
-// const mock: NotificationData[] = [
-//   {
-//     id: "1",
-//     title: "Скидка на комбо",
-//     text: "Только сегодня: -20% на все комбо меню.",
-//     createdAt: "Сегодня, 12:45",
-//     icon: <NotificationIcon />,
-//     actionLabel: "Перейти",
-//   },
-//   {
-//     id: "2",
-//     title: "Доставка стала быстрее",
-//     text: "Мы обновили маршруты — ждите курьера быстрее.",
-//     createdAt: "Вчера, 18:10",
-//     icon: <NotificationIcon />,
-//     actionLabel: "Перейти",
-//   },
-// ];
-
 export default function NotificationsModal({ isOpen, onClose }: Props) {
   const [items, setItems] = useState<NotificationDto[]>([]);
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     if (!isOpen) return;
-    const token = Cookies.get("token"); 
+    const token = Cookies.get("token");
 
     if (!token) return;
 

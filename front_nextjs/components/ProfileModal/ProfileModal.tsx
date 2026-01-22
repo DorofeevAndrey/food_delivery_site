@@ -129,6 +129,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     try {
       const updatedUser = await patchProfile(userId, token!, patchUserData);
       console.log("Профиль обновлён", updatedUser);
+      setUser(updatedUser);
     } catch (error) {
       console.error("Ошибка при обновлении профиля", error);
     }
