@@ -5,6 +5,7 @@ __pycache__/
 
 # DB
 /db/data/
+/minio-data/
 
 # VSCode
 .vscode
