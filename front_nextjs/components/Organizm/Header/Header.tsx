@@ -12,6 +12,7 @@ import MenuIcon from "@/assets/MenuIcon";
 import NotificationIcon from "@/assets/NotificationIcon";
 import BasketIcon from "@/assets/BasketIcon";
 import NotificationsModal from "../NotificationsModal/NotificationsModal";
+import CartModal from "../CartModal/CartModal";
 
 export default function Header() {
   const { user, setUser, logout, refreshUser, isUserLoading } = useUser();
@@ -22,6 +23,7 @@ export default function Header() {
 
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
 
   if (isUserLoading) {
     return (
@@ -78,7 +80,10 @@ export default function Header() {
             onClick={() => setIsNotificationsOpen(true)}
             icon={<NotificationIcon />}
           />
-          <Button onClick={() => {}} icon={<BasketIcon />} />
+          <Button
+            onClick={() => setIsCardModalOpen(true)}
+            icon={<BasketIcon />}
+          />
         </div>
       </header>
       <CommonModal
@@ -88,6 +93,10 @@ export default function Header() {
       <NotificationsModal
         isOpen={isNotificationsOpen}
         onClose={() => setIsNotificationsOpen(false)}
+      />
+      <CartModal
+        isOpen={isCardModalOpen}
+        onClose={() => setIsCardModalOpen(false)}
       />
     </>
   );

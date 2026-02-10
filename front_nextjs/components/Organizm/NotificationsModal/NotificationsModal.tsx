@@ -10,8 +10,6 @@ import CloseIcon from "@/assets/CloseIcon";
 import Button from "../../Atoms/Button/Button";
 import NotificationIcon from "@/assets/NotificationIcon";
 import cn from "classnames";
-import NotificationMessageIcon from "@/assets/NotificationMessageIcon";
-import { useUser } from "@/hooks/useUser";
 import {
   getNotifications,
   markNotificationRead,
