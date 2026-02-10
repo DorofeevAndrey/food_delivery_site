@@ -1,0 +1,70 @@
+.containerModal {
+  padding: 40px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 10px;
+}
+
+.backButton {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 10px;
+}
+
+.telegramButton {
+  width: 100%;
+}
+
+.finishButton {
+  width: 100%;
+}
+
+.botLink {
+  text-align: center;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}
+
+.subtitle {
+  font-size: var(--font-size-base);
+  text-align: center;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.termsContainer {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.terms {
+  font-size: var(--font-size-sm);
+}
+
+.checkIcon {
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 10px;
+  border-radius: 30px;
+  background-color: var(--accentsSuccess);
+  margin: 0 auto;
+}

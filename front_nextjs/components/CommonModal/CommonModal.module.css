@@ -1,0 +1,34 @@
+.commonModal {
+  padding: 24px 15px;
+  display: flex;
+  align-items: start;
+}
+
+/* Padding offsets to combine with Modal.overlayTopLeft */
+.commonOffsetPadding {
+  padding: 50px 25px;
+}
+
+.header {
+  width: 100%;
+  text-align: start;
+}
+
+.addressContainer {
+  width: 100%;
+}
+
+.messangerContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.footerContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.downloadContainer {
+  display: flex;
+  flex-direction: row;
+}
