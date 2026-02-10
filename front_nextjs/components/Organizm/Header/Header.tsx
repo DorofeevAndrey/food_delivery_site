@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ProfileIcon from "@/assets/ProfileIcon";
-import Button from "../Button/Button";
+import Button from "../../Atoms/Button/Button";
 import CommonModal from "../CommonModal/CommonModal";
 import styles from "./Header.module.css";
 import { useUser } from "@/hooks/useUser";

@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation"; // ✅ правильный импорт
 import ProfileIcon from "@/assets/ProfileIcon";
-import Button from "../Button/Button";
-import Modal from "../Modal/Modal";
-import SocialLinks from "../SocialLinks/SocialLinks"; // ✅ добавить импорт, если есть
+import Button from "../../Atoms/Button/Button";
+import Modal from "../../Atoms/Modal/Modal";
+import SocialLinks from "../../Molecules/SocialLinks/SocialLinks"; // ✅ добавить импорт, если есть
 import styles from "./CommonModal.module.css";
-import modalStyles from "../Modal/Modal.module.css";
+import modalStyles from "../../Atoms/Modal/Modal.module.css";
 import cn from "classnames";
 
 type CommonModalProps = {
@@ -27,7 +27,7 @@ export default function CommonModal({
       className={cn(styles.commonModal, className)}
       overlayClassName={cn(
         modalStyles.overlayTopLeft,
-        styles.commonOffsetPadding
+        styles.commonOffsetPadding,
       )}
     >
       <h1 className={styles.header}>Меню</h1>

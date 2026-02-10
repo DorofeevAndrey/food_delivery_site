@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./NotificationItem.module.css";
-import Button from "../Button/Button";
+import Button from "../../Atoms/Button/Button";
 import { ReactNode } from "react";
 import NotificationMessageIcon from "@/assets/NotificationMessageIcon";
 

@@ -1,18 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Button from "@/components/Button/Button";
+import Button from "@/components/Atoms/Button/Button";
 import styles from "./LoginModal.module.css";
 import { telegramLoginFinish, telegramLoginStart } from "@/libs/api/auth";
 import CloseIcon from "@/assets/CloseIcon";
 import { TelegramIcon } from "@/assets/TelegramIcon";
-import Checkbox from "../Checkbox/Checkbox";
-import PhoneInput from "../PhoneInput/PhoneInput";
+import Checkbox from "../../Atoms/Checkbox/Checkbox";
+import PhoneInput from "../../Molecules/PhoneInput/PhoneInput";
 import BackIcon from "@/assets/BackIcon";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { Check } from "lucide-react";
-import Modal from "../Modal/Modal";
+import Modal from "../../Atoms/Modal/Modal";
 
 type LoginModalProps = {
   isOpen: boolean;

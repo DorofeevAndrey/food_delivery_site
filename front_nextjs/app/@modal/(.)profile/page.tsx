@@ -1,5 +1,5 @@
 "use client";
-import ProfileModal from "@/components/ProfileModal/ProfileModal";
+import ProfileModal from "@/components/Organizm/ProfileModal/ProfileModal";
 import { useUser } from "@/hooks/useUser";
 import { usePathname, useRouter } from "next/navigation";
 

@@ -1,16 +1,16 @@
 "use client";
 
-import Modal from "../Modal/Modal";
+import Modal from "../../Atoms/Modal/Modal";
 import cn from "classnames";
-import Button from "../Button/Button";
-import Input from "../Input/Input";
+import Button from "../../Atoms/Button/Button";
+import Input from "../../Atoms/Input/Input";
 import {
   deleteProfile,
   patchProfile,
   ProfileUpdateRequest,
 } from "@/libs/api/profile";
 import styles from "./ProfileModal.module.css";
-import modalStyles from "../Modal/Modal.module.css";
+import modalStyles from "../../Atoms/Modal/Modal.module.css";
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";

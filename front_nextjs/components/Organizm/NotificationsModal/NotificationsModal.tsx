@@ -1,13 +1,13 @@
 "use client";
 
-import Modal from "../Modal/Modal";
+import Modal from "../../Atoms/Modal/Modal";
 import styles from "./NotificationsModal.module.css";
-import modalStyles from "../Modal/Modal.module.css";
+import modalStyles from "../../Atoms/Modal/Modal.module.css";
 import NotificationItem, {
   NotificationData,
-} from "../Notification/NotificationItem";
+} from "../../Molecules/Notification/NotificationItem";
 import CloseIcon from "@/assets/CloseIcon";
-import Button from "../Button/Button";
+import Button from "../../Atoms/Button/Button";
 import NotificationIcon from "@/assets/NotificationIcon";
 import cn from "classnames";
 import NotificationMessageIcon from "@/assets/NotificationMessageIcon";
