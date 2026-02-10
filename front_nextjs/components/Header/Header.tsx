@@ -6,7 +6,7 @@ import styles from "./Header.module.css";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import LoginModal from "../LoginModal/LoginModal";
-import { getProfile } from "@/libs/api/profile";
+import { getProfile as fetchProfile } from "@/libs/api/profile";
 import GordanLogo from "@/assets/GordanLogo";
 import MenuIcon from "@/assets/MenuIcon";
 import NotificationIcon from "@/assets/NotificationIcon";
@@ -60,8 +60,8 @@ export default function Header() {
                 icon={<ProfileIcon />}
               />
               <LoginModal
-                getProfile={async (token) => {
-                  const data = await getProfile(token);
+                getProfile={async () => {
+                  const data = await fetchProfile();
                   setUser(data);
                 }}
                 isOpen={isLoginModalOpen}

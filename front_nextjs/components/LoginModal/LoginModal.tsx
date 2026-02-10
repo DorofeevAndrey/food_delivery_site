@@ -17,7 +17,7 @@ import Modal from "../Modal/Modal";
 type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  getProfile: (token: string) => void;
+  getProfile: () => void;
 };
 
 export default function LoginModal({
@@ -79,7 +79,7 @@ export default function LoginModal({
 
         setTimeout(() => {
           onClose();
-          getProfile(token);
+          getProfile();
         }, 1500);
       } else {
         alert("Ошибка: " + JSON.stringify(token));

@@ -19,7 +19,7 @@ type UserContextType = {
 };
 
 export const UserContext = createContext<UserContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -43,7 +43,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const profile = await getProfile(token);
+      const profile = await getProfile();
       setUser(profile);
     } catch (err) {
       console.error("Ошибка при загрузке профиля", err);

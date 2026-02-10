@@ -36,7 +36,7 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
     if (!token) return;
 
     setLoading(true);
-    getNotifications(token)
+    getNotifications()
       .then(setItems)
       .finally(() => setLoading(false));
   }, [isOpen]);
@@ -45,7 +45,7 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
     const token = Cookies.get("token");
     if (!token) return;
 
-    const updated = await markNotificationRead(token, id, true);
+    const updated = await markNotificationRead(id);
     setItems((prev) => prev.map((n) => (n.id === id ? updated : n)));
   };
   return (
@@ -55,7 +55,7 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
       className={styles.modalContainer}
       overlayClassName={cn(
         modalStyles.overlayTopRight,
-        styles.notificationOffsetPadding
+        styles.notificationOffsetPadding,
       )}
     >
       <div className={styles.header}>

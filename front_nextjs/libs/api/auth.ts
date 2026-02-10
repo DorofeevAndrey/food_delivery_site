@@ -1,3 +1,5 @@
+import { apiFetch } from "./apiFetch";
+
 type TelegramLoginResponse = {
   session_id: string;
   bot_link: string;
@@ -12,16 +14,14 @@ type TelegramSessionRequest = {
 };
 
 export async function telegramLoginStart(
-  phone: string
+  phone: string,
 ): Promise<TelegramLoginResponse> {
   const formattedPhone = "+7" + phone.replace(/\D/g, "").substring(1, 11);
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-  const res = await fetch(`${baseUrl}/auth/start`, {
+  const res = await apiFetch("/auth/start", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone: formattedPhone } as TelegramLoginRequest),
+    auth: false,
   });
 
   if (!res.ok) {
@@ -33,17 +33,16 @@ export async function telegramLoginStart(
 }
 
 export async function telegramLoginFinish(session_id: string): Promise<string> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const res = await fetch(`${baseUrl}/auth/finish`, {
+  const res = await apiFetch("/auth/finish", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ session_id: session_id } as TelegramSessionRequest),
+    body: JSON.stringify({ session_id } as TelegramSessionRequest),
+    auth: false,
   });
 
   if (!res.ok) {
     throw new Error("Ошибка сети");
   }
 
-  const token = await res.json();
-  return token.token;
+  const data = await res.json();
+  return data.token;
 }

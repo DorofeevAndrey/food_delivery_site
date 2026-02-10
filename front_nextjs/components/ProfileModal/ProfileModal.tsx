@@ -113,7 +113,6 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   const handleSaveProfile = async () => {
     if (saveDisabled) return;
-    const token = Cookies.get("token");
     const userId = user!.id;
 
     const [day, month, year] = dateOfBirth.split(".");
@@ -127,7 +126,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     };
 
     try {
-      const updatedUser = await patchProfile(userId, token!, patchUserData);
+      const updatedUser = await patchProfile(userId, patchUserData);
       console.log("Профиль обновлён", updatedUser);
       setUser(updatedUser);
     } catch (error) {
@@ -146,7 +145,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     const userId = user!.id;
 
     try {
-      const deleted = await deleteProfile(token!, userId);
+      const deleted = await deleteProfile(userId);
       if (deleted) {
         console.log("Профиль удалён");
         // Например, можно перенаправить на главную страницу после удаления
@@ -166,7 +165,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           onClose={onClose}
           overlayClassName={cn(
             modalStyles.overlayTopRight,
-            styles.profileOffsetPadding
+            styles.profileOffsetPadding,
           )}
         >
           <div className={styles.headerContainer}>
@@ -229,7 +228,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           className={styles.modalEdit}
           overlayClassName={cn(
             modalStyles.overlayTopRight,
-            styles.profileOffsetPadding
+            styles.profileOffsetPadding,
           )}
         >
           <Button
