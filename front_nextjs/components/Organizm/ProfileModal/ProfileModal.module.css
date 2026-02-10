@@ -2,7 +2,7 @@
   padding: 0px;
   display: flex;
   flex-direction: column;
-  width: 350px;
+  width: 100%;
 }
 
 /* Padding offsets to combine with Modal.overlayTopRight */
