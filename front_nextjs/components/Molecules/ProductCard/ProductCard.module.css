@@ -8,8 +8,9 @@
 }
 
 .imageWrapper {
-  width: 100%;
-  padding-top: 75%; /* 4:3 ratio */
+  width: 275px;
+  height: 275px;
+  aspect-ratio: 1 / 1; /* квадрат */
   position: relative;
   overflow: hidden;
   border-radius: 12px;
@@ -49,7 +50,13 @@
 
 .description {
   font-size: 13px;
+  text-align: justify;
   color: #666666;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Количество строк */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .footerRow {
