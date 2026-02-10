@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; /* 28px + паддинги */
+  height: 44px;
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--color-white);
+  transition: background 0.2s ease;
+}
+
+.link:hover {
+  background: rgba(var(--color-black-rgb), 0.1);
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+}

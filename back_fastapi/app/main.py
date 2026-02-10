@@ -1,7 +1,7 @@
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from app.routers import user, auth, profile
+from app.routers import user, auth, profile, notification
 
 app = FastAPI(title="Food_Delivery_API")
 
@@ -20,3 +20,4 @@ app.add_middleware(
 app.include_router(user.router)
 app.include_router(auth.router)
 app.include_router(profile.router)
+app.include_router(notification.router)

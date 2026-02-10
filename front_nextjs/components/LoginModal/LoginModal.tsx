@@ -5,7 +5,7 @@ import Button from "@/components/Button/Button";
 import styles from "./LoginModal.module.css";
 import { telegramLoginFinish, telegramLoginStart } from "@/libs/api/auth";
 import CloseIcon from "@/assets/CloseIcon";
-import TelegramIcon from "@/assets/TelegramIcon";
+import { TelegramIcon } from "@/assets/TelegramIcon";
 import Checkbox from "../Checkbox/Checkbox";
 import PhoneInput from "../PhoneInput/PhoneInput";
 import BackIcon from "@/assets/BackIcon";
@@ -17,7 +17,7 @@ import Modal from "../Modal/Modal";
 type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  getProfile: (token: string) => void;
+  getProfile: () => void;
 };
 
 export default function LoginModal({
@@ -79,7 +79,7 @@ export default function LoginModal({
 
         setTimeout(() => {
           onClose();
-          getProfile(token);
+          getProfile();
         }, 1500);
       } else {
         alert("Ошибка: " + JSON.stringify(token));
@@ -91,7 +91,7 @@ export default function LoginModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} className={styles.containerModal}>
       {step == "phone" && (
         <>
           <Button
@@ -141,7 +141,9 @@ export default function LoginModal({
             Поделитесь контактом в Telegram c аккаунта с номером {phone} и
             нажмите «Готово»
           </p>
-          <Link href={botLink}>Перейти в Telegram</Link>
+          <Link className={styles.botLink} href={botLink}>
+            Перейти в Telegram
+          </Link>
           <Button
             title="Готово"
             className={styles.finishButton}

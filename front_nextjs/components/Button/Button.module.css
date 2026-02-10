@@ -1,25 +1,20 @@
 .button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--color-white);
   color: var(--textPrimary);
   border: none;
   cursor: pointer;
-  padding: 0px;
+  padding: 8px;
   border-radius: var(--buttonSmallBorderRadius);
   transition: background-color 0.3s;
-  height: 36px;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
 }
 
 .withGap {
   gap: 8px;
-}
-
-.iconOnly {
-  padding: 0px 8px;
 }
 
 .button:hover {
@@ -74,9 +69,4 @@
 .grey :disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-.icon {
-  height: 20px;
-  width: 20px;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Modal from "../Modal/Modal";
+import cn from "classnames";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import {
@@ -9,6 +10,7 @@ import {
   ProfileUpdateRequest,
 } from "@/libs/api/profile";
 import styles from "./ProfileModal.module.css";
+import modalStyles from "../Modal/Modal.module.css";
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -111,7 +113,6 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   const handleSaveProfile = async () => {
     if (saveDisabled) return;
-    const token = Cookies.get("token");
     const userId = user!.id;
 
     const [day, month, year] = dateOfBirth.split(".");
@@ -125,8 +126,9 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     };
 
     try {
-      const updatedUser = await patchProfile(userId, token!, patchUserData);
+      const updatedUser = await patchProfile(userId, patchUserData);
       console.log("Профиль обновлён", updatedUser);
+      setUser(updatedUser);
     } catch (error) {
       console.error("Ошибка при обновлении профиля", error);
     }
@@ -143,7 +145,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     const userId = user!.id;
 
     try {
-      const deleted = await deleteProfile(token!, userId);
+      const deleted = await deleteProfile(userId);
       if (deleted) {
         console.log("Профиль удалён");
         // Например, можно перенаправить на главную страницу после удаления
@@ -157,7 +159,15 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   return (
     <>
       {!isEdit ? (
-        <Modal className={styles.modal} isOpen={isOpen} onClose={onClose}>
+        <Modal
+          className={styles.profileModal}
+          isOpen={isOpen}
+          onClose={onClose}
+          overlayClassName={cn(
+            modalStyles.overlayTopRight,
+            styles.profileOffsetPadding,
+          )}
+        >
           <div className={styles.headerContainer}>
             <Button
               className={styles.buttonName}
@@ -212,7 +222,15 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           </div>
         </Modal>
       ) : (
-        <Modal isOpen={isOpen} onClose={onClose} className={styles.modalEdit}>
+        <Modal
+          isOpen={isOpen}
+          onClose={onClose}
+          className={styles.modalEdit}
+          overlayClassName={cn(
+            modalStyles.overlayTopRight,
+            styles.profileOffsetPadding,
+          )}
+        >
           <Button
             className={styles.backToProfileButton}
             icon={<BackIcon />}
