@@ -13,9 +13,11 @@ import NotificationIcon from "@/assets/NotificationIcon";
 import BasketIcon from "@/assets/BasketIcon";
 import NotificationsModal from "../NotificationsModal/NotificationsModal";
 import CartModal from "../CartModal/CartModal";
+import { useCart } from "@/hooks/useCart";
 
 export default function Header() {
   const { user, setUser, logout, refreshUser, isUserLoading } = useUser();
+  const { totalCount } = useCart();
 
   const router = useRouter();
 
@@ -81,6 +83,7 @@ export default function Header() {
             icon={<NotificationIcon />}
           />
           <Button
+            title={String(totalCount)}
             onClick={() => setIsCardModalOpen(true)}
             icon={<BasketIcon />}
           />

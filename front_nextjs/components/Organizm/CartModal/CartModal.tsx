@@ -6,7 +6,10 @@ import modalStyles from "../../Atoms/Modal/Modal.module.css";
 import cn from "classnames";
 import { useState } from "react";
 import Button from "@/components/Atoms/Button/Button";
-import { useCart } from "@/hooks/useCart"; // <-- добавить
+import { useCart } from "@/hooks/useCart";
+
+import { createOrder, type OrderMode } from "@/libs/api/order";
+import Input from "@/components/Atoms/Input/Input";
 
 type CartModalProps = {
   isOpen: boolean;
@@ -14,14 +17,47 @@ type CartModalProps = {
 };
 
 export default function CartModal({ isOpen, onClose }: CartModalProps) {
-  type Mode = "delivery" | "restaurant";
+  type Mode = OrderMode;
   const [mode, setMode] = useState<Mode>("delivery");
+
+  const [address, setAddress] = useState("");
+  const [comment, setComment] = useState("");
 
   const { items, totalPrice, changeQuantity, removeItem, clearCart } =
     useCart();
 
   const isEmpty = items.length === 0;
   const positionsCount = items.length;
+
+  const handleCheckout = async () => {
+    if (isEmpty) return;
+
+    if (mode === "delivery" && !address.trim()) {
+      alert("Укажите адрес доставки");
+      return;
+    }
+
+    try {
+      const payload = {
+        mode,
+        items: items.map(({ product, quantity }) => ({
+          product_id: product.id,
+          quantity,
+        })),
+        address: mode === "delivery" ? address.trim() : null,
+        comment: comment.trim() || null,
+      };
+
+      const order = await createOrder(payload);
+      // здесь можешь показать уведомление/redirect на историю заказов
+      clearCart();
+      onClose();
+      console.log("Создан заказ", order);
+    } catch (e) {
+      console.error(e);
+      alert("Не удалось оформить заказ");
+    }
+  };
 
   return (
     <Modal
@@ -47,6 +83,27 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
           onClick={() => setMode("restaurant")}
         />
       </div>
+      {mode === "delivery" && (
+        <div className={styles.addressBlock}>
+          <Input
+            className={styles.addressInput}
+            placeholder="Адрес доставки"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          ></Input>
+        </div>
+      )}
+
+      {mode === "restaurant" && (
+        <div className={styles.addressBlock}>
+          <Input
+            className={styles.addressInput}
+            placeholder="Выберите адрес ресторана"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          ></Input>
+        </div>
+      )}
 
       <div className={styles.headerRow}>
         <div className={styles.headerLeft}>
@@ -133,6 +190,15 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
         )}
       </div>
 
+      <div className={styles.commentBlock}>
+        <Input
+          className={styles.commentInput}
+          placeholder="Комментарий к заказу"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        ></Input>
+      </div>
+
       <div className={styles.footer}>
         <div className={styles.total}>Итого: {totalPrice} ₽</div>
         <Button
@@ -140,11 +206,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
           variant="orange"
           className={styles.checkoutButton}
           disable={isEmpty}
-          onClick={() => {
-            // тут потом добавишь оформление заказа
-            clearCart();
-            onClose();
-          }}
+          onClick={handleCheckout}
         />
       </div>
     </Modal>
