@@ -8,6 +8,7 @@ export type ProfileResponse = {
   date_of_birth: string;
   email: string;
   gender: string;
+  is_admin: boolean;
 };
 
 export type ProfileUpdateRequest = {
