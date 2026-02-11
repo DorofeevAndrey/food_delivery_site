@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import styles from "./ProductList.module.css";
 import ProductCard from "@/components/Molecules/ProductCard/ProductCard";
 import { getProducts, type ProductDto } from "@/libs/api/product";
+import { useCart } from "@/hooks/useCart"; // <-- добавить
 
 export default function ProductList() {
   const [products, setProducts] = useState<ProductDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { addItem } = useCart(); // <-- достаём из контекста
 
   useEffect(() => {
     (async () => {
@@ -38,10 +41,7 @@ export default function ProductList() {
         <ProductCard
           key={product.id}
           product={product}
-          onAddToCart={(p) => {
-            // позже сюда прилетит addToCart(p)
-            console.log("add to cart", p);
-          }}
+          onAddToCart={(p) => addItem(p)}
         />
       ))}
     </div>
