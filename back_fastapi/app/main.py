@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import user, auth, profile, notification, product
+from app.routers import user, auth, profile, notification, product, order, admin_order
 
 app = FastAPI(title="Food_Delivery_API")
 
@@ -21,3 +21,5 @@ app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(notification.router)
 app.include_router(product.router)
+app.include_router(order.router)
+app.include_router(admin_order.router)
