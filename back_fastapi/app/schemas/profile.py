@@ -10,6 +10,7 @@ class UserResponseSchema(BaseModel):
     date_of_birth: date | None = None
     email: str | None = None
     gender: str | None = None
+    is_admin: bool
 
     class Config:
         orm_mode = True

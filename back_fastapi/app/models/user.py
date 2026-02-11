@@ -25,3 +25,6 @@ class User(Base):
     date_of_birth = Column(Date, nullable=True)
     email = Column(String, unique=True, index=True, nullable=True)
     gender = Column(String, nullable=True)
+
+    # Админские права
+    is_admin = Column(Boolean, default=False, nullable=False)

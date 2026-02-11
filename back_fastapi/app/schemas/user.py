@@ -6,6 +6,7 @@ class UserScheme(BaseModel):
     first_name: str 
     telegram_id: int
     email: str
+    
 
     class Config:
         orm_mode = True
