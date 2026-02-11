@@ -40,3 +40,6 @@ class OrderOut(BaseModel):
 
   class Config:
     from_attributes = True
+
+class OrderStatusUpdate(BaseModel):
+    status: OrderStatusEnum
