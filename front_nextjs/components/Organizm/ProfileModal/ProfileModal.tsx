@@ -26,6 +26,7 @@ import BankCardsIcon from "@/assets/BankCardsIcon";
 import QuitIcon from "@/assets/QuitIcon";
 import BackIcon from "@/assets/BackIcon";
 import { useUser } from "@/hooks/useUser";
+import Dropdown from "@/components/Atoms/DropDown/DropDown";
 
 type ProfileModalProps = {
   isOpen: boolean;
@@ -222,33 +223,15 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           {emailError && <span className={styles.error}>{emailError}</span>}
         </div>
 
-        <div className={styles.genderContainer} ref={genderRef}>
-          <Input
-            id="gender"
-            placeholder="Пол"
-            value={gender}
-            onChange={() => {}}
-            type="text"
-            readOnly
-            onClick={() => setOpenGender(!openGender)}
-          />
-          {openGender && (
-            <div className={styles.dropdown}>
-              <div
-                className={styles.option}
-                onClick={() => handleSelectGender("Мужской")}
-              >
-                Мужской
-              </div>
-              <div
-                className={styles.option}
-                onClick={() => handleSelectGender("Женский")}
-              >
-                Женский
-              </div>
-            </div>
-          )}
-        </div>
+        <Dropdown
+          value={gender}
+          placeholder="Пол"
+          options={[
+            { value: "Мужской", label: "Мужской" },
+            { value: "Женский", label: "Женский" },
+          ]}
+          onChange={(val) => setGender(val)}
+        />
 
         <Button
           title="Сохранить"
@@ -323,14 +306,6 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           variant="white"
         />
       </div>
-
-      {user?.is_admin && (
-        <Button
-          title="Админка"
-          variant="white"
-          onClick={() => router.push("/admin")}
-        />
-      )}
 
       <div className={styles.quitButtonContainer}>
         <Button
