@@ -4,8 +4,9 @@ from uuid import uuid4
 from sqlalchemy.orm import Session
 
 from app.core.s3 import s3_client
-from app.dependencies import get_db  # у тебя уже есть
+from app.dependencies import get_db, get_admin_user
 from app.models.product import Product
+from app.models.user import User
 from app.schemas.product import (
     ProductCreateScheme,
     ProductUpdateScheme,
@@ -25,6 +26,20 @@ def list_products(db: Session = Depends(get_db)):
     )
     return items
 
+
+@router.get("/all", response_model=List[ProductOutScheme])
+def admin_list_all_products(
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user),
+):
+    items = (
+        db.query(Product)
+        .order_by(Product.id.asc())
+        .all()
+    )
+    return items
+
+
 @router.get("/{product_id}", response_model=ProductOutScheme)
 def get_product(product_id: int, db: Session = Depends(get_db)):
     product = db.query(Product).filter(Product.id == product_id).first()
@@ -37,7 +52,11 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 # CRUD для админки (пока без проверки ролей — добавишь, когда появится админ):
 
 @router.post("", response_model=ProductOutScheme, status_code=status.HTTP_201_CREATED)
-def create_product(data: ProductCreateScheme, db: Session = Depends(get_db)):
+def create_product(
+    data: ProductCreateScheme,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user),
+):
     product = Product(**data.dict())
     db.add(product)
     db.commit()
@@ -49,6 +68,7 @@ def update_product(
     product_id: int,
     data: ProductUpdateScheme,
     db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user),
 ):
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
@@ -66,7 +86,11 @@ def update_product(
     return product
 
 @router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_product(product_id: int, db: Session = Depends(get_db)):
+def delete_product(
+    product_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user),
+):
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
         raise HTTPException(
@@ -82,6 +106,7 @@ def upload_product_image(
     product_id: int,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user),
 ):
     # 1. Проверяем, что продукт существует
     product = db.query(Product).filter(Product.id == product_id).first()
