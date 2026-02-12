@@ -12,7 +12,7 @@ export async function apiFetch(
     ...(fetchOptions.headers as Record<string, string>),
   };
   if (auth) {
-    const token = Cookies.get("token");
+    const token = Cookies.get("auth_token");
     if (token) headers["Authorization"] = `Bearer ${token}`;
   }
   const url = `${getBaseUrl()}${path}`;

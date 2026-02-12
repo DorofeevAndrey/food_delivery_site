@@ -73,7 +73,9 @@ export default function LoginModal({
     try {
       const token = await telegramLoginFinish(sessionId);
       if (token) {
-        Cookies.set("token", token, { expires: 2, secure: true });
+        console.log("old cookie auth_token:", Cookies.get("auth_token"));
+        Cookies.set("auth_token", token, { expires: 2 });
+        console.log("new cookie auth_token:", Cookies.get("auth_token"));
 
         setStep("finish");
 

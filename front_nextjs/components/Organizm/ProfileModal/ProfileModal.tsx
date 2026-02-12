@@ -145,7 +145,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   };
 
   const handleDeleteUser = async () => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("auth_token");
     const userId = user!.id;
 
     try {

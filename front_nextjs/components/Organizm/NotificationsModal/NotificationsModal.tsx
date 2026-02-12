@@ -29,7 +29,7 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
 
   useEffect(() => {
     if (!isOpen) return;
-    const token = Cookies.get("token");
+    const token = Cookies.get("auth_token");
 
     if (!token) return;
 
@@ -40,7 +40,7 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
   }, [isOpen]);
 
   const handleAction = async (id: number) => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("auth_token");
     if (!token) return;
 
     const updated = await markNotificationRead(id);
