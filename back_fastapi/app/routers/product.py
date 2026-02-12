@@ -131,11 +131,17 @@ def upload_product_image(
                 "ContentType": file.content_type or "application/octet-stream",
             },
         )
-    except Exception:
+    except Exception as e:
+        print("S3 upload error:", repr(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to upload image",
         )
+    # except Exception:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    #         detail="Failed to upload image",
+    #     )
 
     # 4. Формируем публичный URL
     # Для MinIO в dev можно так: http://localhost:9000/bucket/key

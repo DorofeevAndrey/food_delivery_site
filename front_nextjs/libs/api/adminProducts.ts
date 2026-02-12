@@ -44,3 +44,17 @@ export async function deleteProductAdmin(id: number): Promise<void> {
   });
 }
 
+export async function uploadProductImageAdmin(
+  id: number,
+  file: File,
+): Promise<ProductDto> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await apiFetch(`/products/${id}/image`, {
+    method: "POST",
+    body: formData,
+  });
+  return res.json();
+}
+

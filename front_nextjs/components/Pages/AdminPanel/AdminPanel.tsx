@@ -15,6 +15,7 @@ import {
   createProductAdmin,
   updateProductAdmin,
   deleteProductAdmin,
+  uploadProductImageAdmin,
 } from "@/libs/api/adminProducts";
 
 import Button from "@/components/Atoms/Button/Button";
@@ -140,6 +141,14 @@ export default function AdminPanel() {
     if (editingProductId === id) {
       resetProductForm();
     }
+  };
+
+  const handleUploadImage = async (id: number, fileList: FileList | null) => {
+    if (!fileList || fileList.length === 0) return;
+    const file = fileList[0];
+
+    const updated = await uploadProductImageAdmin(id, file);
+    setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
   };
 
   if (isUserLoading) {
@@ -389,6 +398,32 @@ export default function AdminPanel() {
                       title="Редактировать"
                       onClick={() => startEditProduct(p)}
                     />
+                    <label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={(event) =>
+                          handleUploadImage(p.id, event.target.files)
+                        }
+                      />
+                      <Button
+                        variant="white"
+                        title={
+                          p.image_url
+                            ? "Заменить изображение"
+                            : "Загрузить изображение"
+                        }
+                        onClick={() => {
+                          const label = document.activeElement
+                            ?.parentElement as HTMLLabelElement | null;
+                          const input = label?.querySelector(
+                            'input[type="file"]',
+                          ) as HTMLInputElement | null;
+                          if (input) input.click();
+                        }}
+                      />
+                    </label>
                     <Button
                       variant="white"
                       title="Удалить"

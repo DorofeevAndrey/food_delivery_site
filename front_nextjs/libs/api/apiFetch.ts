@@ -8,9 +8,14 @@ export async function apiFetch(
 ) {
   const { auth = true, ...fetchOptions } = options;
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
     ...(fetchOptions.headers as Record<string, string>),
   };
+
+  // Если отправляем не FormData, по умолчанию JSON
+  const isFormData = fetchOptions.body instanceof FormData;
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
   if (auth) {
     const token = Cookies.get("auth_token");
     if (token) headers["Authorization"] = `Bearer ${token}`;
