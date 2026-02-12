@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import styles from "./ProductList.module.css";
 import ProductCard from "@/components/Molecules/ProductCard/ProductCard";
 import { getProducts, type ProductDto } from "@/libs/api/product";
-import { useCart } from "@/hooks/useCart"; // <-- добавить
+import { useCart } from "@/hooks/useCart";
+import Skeleton from "@/components/Atoms/Sketelon/Skeleton";
 
 export default function ProductList() {
   const [products, setProducts] = useState<ProductDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { addItem } = useCart(); // <-- достаём из контекста
+  const { addItem } = useCart();
 
   useEffect(() => {
     (async () => {
@@ -28,7 +29,13 @@ export default function ProductList() {
   }, []);
 
   if (loading) {
-    return <div className={styles.state}>Загружаем товары…</div>;
+    return (
+      <div className={styles.wrapper}>
+        {Array.from({ length: 6 }).map((_, idx) => (
+          <Skeleton key={idx} height={260} borderRadius={16} />
+        ))}
+      </div>
+    );
   }
 
   if (error) {

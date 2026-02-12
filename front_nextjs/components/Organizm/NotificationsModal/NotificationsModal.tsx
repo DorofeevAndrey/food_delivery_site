@@ -3,9 +3,7 @@
 import Modal from "../../Atoms/Modal/Modal";
 import styles from "./NotificationsModal.module.css";
 import modalStyles from "../../Atoms/Modal/Modal.module.css";
-import NotificationItem, {
-  NotificationData,
-} from "../../Molecules/Notification/NotificationItem";
+import NotificationItem from "../../Molecules/Notification/NotificationItem";
 import CloseIcon from "@/assets/CloseIcon";
 import Button from "../../Atoms/Button/Button";
 import NotificationIcon from "@/assets/NotificationIcon";
@@ -17,6 +15,7 @@ import {
 } from "@/libs/api/notification";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import Skeleton from "@/components/Atoms/Sketelon/Skeleton";
 
 type Props = {
   isOpen: boolean;
@@ -62,7 +61,10 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
       </div>
 
       <div className={styles.list}>
-        {loading && <div>Загружаем...</div>}
+        {loading &&
+          Array.from({ length: 3 }).map((_, idx) => (
+            <Skeleton key={idx} height={56} borderRadius={12} />
+          ))}
         {!loading &&
           items.map((n) => (
             <NotificationItem

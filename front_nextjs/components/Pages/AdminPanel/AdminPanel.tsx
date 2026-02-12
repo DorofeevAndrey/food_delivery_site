@@ -22,6 +22,7 @@ import Button from "@/components/Atoms/Button/Button";
 import Input from "@/components/Atoms/Input/Input";
 import Checkbox from "@/components/Atoms/Checkbox/Checkbox";
 import Dropdown from "@/components/Atoms/DropDown/DropDown";
+import Skeleton from "@/components/Atoms/Sketelon/Skeleton";
 import styles from "./AdminPanel.module.css";
 
 type AdminView = "orders" | "products";
@@ -152,7 +153,13 @@ export default function AdminPanel() {
   };
 
   if (isUserLoading) {
-    return <div className={styles.center}>Загружаем…</div>;
+    return (
+      <main className={styles.wrapper}>
+        <div className={styles.center}>
+          <Skeleton width={200} height={24} borderRadius={12} />
+        </div>
+      </main>
+    );
   }
 
   if (!user || !user.is_admin) {
@@ -217,7 +224,13 @@ export default function AdminPanel() {
 
       {view === "orders" && (
         <>
-          {loading && <div className={styles.center}>Загружаем заказы…</div>}
+          {loading && (
+            <section className={styles.list}>
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <Skeleton key={idx} height={120} borderRadius={16} />
+              ))}
+            </section>
+          )}
 
           {!loading && orders.length === 0 && (
             <div className={styles.center}>Заказов с таким статусом нет</div>
@@ -358,7 +371,11 @@ export default function AdminPanel() {
           </section>
 
           {productsLoading && (
-            <div className={styles.center}>Загружаем товары…</div>
+            <section className={styles.list}>
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <Skeleton key={idx} height={120} borderRadius={16} />
+              ))}
+            </section>
           )}
 
           {!productsLoading && products.length === 0 && (

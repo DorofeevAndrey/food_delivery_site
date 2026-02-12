@@ -14,6 +14,7 @@ import BasketIcon from "@/assets/BasketIcon";
 import NotificationsModal from "../NotificationsModal/NotificationsModal";
 import CartModal from "../CartModal/CartModal";
 import { useCart } from "@/hooks/useCart";
+import Skeleton from "@/components/Atoms/Sketelon/Skeleton";
 
 export default function Header() {
   const { user, setUser, logout, refreshUser, isUserLoading } = useUser();
@@ -31,13 +32,13 @@ export default function Header() {
     return (
       <header className={`${styles.header} ${styles.headerSkeleton}`}>
         <div className={styles.left}>
-          <div className={styles.skelBox} />
+          <Skeleton width={80} height={40} borderRadius={8} />
         </div>
         <div className={styles.center}>
-          <div className={styles.skelLogo} />
+          <Skeleton width={200} height={40} borderRadius={6} />
         </div>
         <div className={styles.right}>
-          <div className={styles.skelBox} />
+          <Skeleton width={80} height={40} borderRadius={8} />
         </div>
       </header>
     );
