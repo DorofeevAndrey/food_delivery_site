@@ -7,9 +7,11 @@ export type ProductDto = {
   price: string;
   weight: string;
   image_url?: string | null;
+  is_active: boolean;
 };
 
 export async function getProducts(): Promise<ProductDto[]> {
   const res = await apiFetch("/products");
   return res.json();
 }
+
