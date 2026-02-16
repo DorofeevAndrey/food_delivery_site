@@ -1,5 +1,7 @@
 "use client";
 
+import { useRealtime } from "@/hooks/useRealtime";
+
 import { useEffect, useState } from "react";
 import styles from "./ProductList.module.css";
 import ProductCard from "@/components/Molecules/ProductCard/ProductCard";
@@ -11,6 +13,34 @@ export default function ProductList() {
   const [products, setProducts] = useState<ProductDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  //загрузка продуктов
+
+  useRealtime((msg) => {
+    if (msg.type === "product_updated") {
+      setProducts((prev) => {
+        const product = msg.payload;
+        if (!product.is_active) {
+          return prev.filter((p) => p.id !== product.id);
+        }
+        const exists = prev.some((p) => p.id === product.id);
+        if (exists) {
+          return prev.map((p) => (p.id === product.id ? product : p));
+        }
+        // Товар снова активный, но его нет в списке — добавляем
+        return [product, ...prev];
+      });
+    }
+    if (msg.type === "product_deleted") {
+      setProducts((prev) => prev.filter((p) => p.id !== msg.payload.id));
+    }
+    if (msg.type === "product_created") {
+      // Если товар активен, добавляем в список
+      if (msg.payload.is_active) {
+        setProducts((prev) => [msg.payload, ...prev]);
+      }
+    }
+  });
 
   const { addItem } = useCart();
 

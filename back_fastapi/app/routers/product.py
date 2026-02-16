@@ -3,6 +3,10 @@ from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from uuid import uuid4
 from sqlalchemy.orm import Session
 
+from app.routers.web_socket.web_socket import manager
+from fastapi import BackgroundTasks
+import json
+
 from app.core.s3 import s3_client
 from app.dependencies import get_db, get_admin_user
 from app.models.product import Product
@@ -56,11 +60,23 @@ def create_product(
     data: ProductCreateScheme,
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user),
+    background_tasks: BackgroundTasks = BackgroundTasks(),
 ):
     product = Product(**data.dict())
     db.add(product)
     db.commit()
     db.refresh(product)
+    
+    # Отправляем уведомление
+    product_dict = ProductOutScheme.model_validate(product).model_dump(mode="json")
+    background_tasks.add_task(
+        manager.broadcast,
+        json.dumps({
+            "type": "product_created",
+            "payload": product_dict
+        }, default=str)
+    )
+    
     return product
 
 @router.patch("/{product_id}", response_model=ProductOutScheme)
@@ -69,12 +85,11 @@ def update_product(
     data: ProductUpdateScheme,
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user),
+    background_tasks: BackgroundTasks = BackgroundTasks(),
 ):
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
-        )
+        raise HTTPException(status_code=404, detail="Product not found")
 
     update_data = data.dict(exclude_unset=True)
     for key, value in update_data.items():
@@ -83,6 +98,16 @@ def update_product(
     db.add(product)
     db.commit()
     db.refresh(product)
+    
+    product_dict = ProductOutScheme.model_validate(product).model_dump(mode="json")
+    background_tasks.add_task(
+        manager.broadcast,
+        json.dumps({
+            "type": "product_updated",
+            "payload": product_dict
+        }, default=str)
+    )
+    
     return product
 
 @router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -90,15 +115,24 @@ def delete_product(
     product_id: int,
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user),
+    background_tasks: BackgroundTasks = BackgroundTasks(),
 ):
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
-        )
+        raise HTTPException(status_code=404, detail="Product not found")
 
+    product_id_to_delete = product.id
     db.delete(product)
     db.commit()
+    
+    background_tasks.add_task(
+        manager.broadcast,
+        json.dumps({
+            "type": "product_deleted",
+            "payload": {"id": product_id_to_delete}
+        }, default=str)
+    )
+    
     return {"detail": "Product deleted"}
 
 @router.post("/{product_id}/image", response_model=ProductOutScheme)
@@ -107,6 +141,7 @@ def upload_product_image(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user),
+    background_tasks: BackgroundTasks = BackgroundTasks(),
 ):
     # 1. Проверяем, что продукт существует
     product = db.query(Product).filter(Product.id == product_id).first()
@@ -153,5 +188,16 @@ def upload_product_image(
     db.add(product)
     db.commit()
     db.refresh(product)
+
+    
+    product_dict = ProductOutScheme.model_validate(product).model_dump(mode="json")
+
+    background_tasks.add_task(
+        manager.broadcast,
+        json.dumps({
+            "type": "product_updated",
+            "payload": product_dict
+        }, default=str)
+    )
 
     return product

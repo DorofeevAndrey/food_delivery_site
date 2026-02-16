@@ -1,10 +1,14 @@
+import json
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+
+from fastapi import BackgroundTasks
 
 from app.dependencies import get_db, get_admin_user
 from app.models.order import Order, OrderStatusEnum
 from app.models.user import User
 from app.schemas.order import OrderOut, OrderStatusUpdate
+from app.routers.web_socket.web_socket import manager
 
 router = APIRouter(prefix="/admin/orders", tags=["AdminOrders"])
 
@@ -39,6 +43,7 @@ def update_order_status(
     data: OrderStatusUpdate,
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user),
+    background_tasks: BackgroundTasks = BackgroundTasks(),  # ← добавить
 ):
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
@@ -48,4 +53,17 @@ def update_order_status(
     db.add(order)
     db.commit()
     db.refresh(order)
+    
+    # Отправляем в фоне, чтобы не блокировать ответ
+    background_tasks.add_task(
+        manager.broadcast,
+        json.dumps({
+            "type": "order_status_changed",
+            "payload": {
+                "order_id": order.id,
+                "status": order.status.value,  # если это Enum, нужен .value
+            }
+        }, default=str)
+    )
+    
     return order

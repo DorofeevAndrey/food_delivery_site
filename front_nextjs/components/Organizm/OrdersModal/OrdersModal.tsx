@@ -1,5 +1,7 @@
 "use client";
 
+import { useRealtime } from "@/hooks/useRealtime";
+
 import Modal from "@/components/Atoms/Modal/Modal";
 import styles from "./OrdersModal.module.css";
 import { useEffect, useState } from "react";
@@ -19,6 +21,18 @@ export default function OrdersModal({ isOpen, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useRealtime((msg) => {
+    if (msg.type === "order_status_changed") {
+      setOrders((prev) =>
+        prev.map((p) =>
+          p.id === msg.payload.order_id
+            ? { ...p, status: msg.payload.status }
+            : p,
+        ),
+      );
+    }
+  });
+
   useEffect(() => {
     if (!isOpen) return;
     setLoading(true);
@@ -30,11 +44,7 @@ export default function OrdersModal({ isOpen, onClose }: Props) {
   }, [isOpen]);
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      className={styles.modalContainer}
-    >
+    <Modal isOpen={isOpen} onClose={onClose} className={styles.modalContainer}>
       <div className={styles.header}>
         <Button
           variant="white"
