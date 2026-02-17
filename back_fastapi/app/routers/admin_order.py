@@ -1,13 +1,14 @@
 import json
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
+from sqlalchemy import func
 from sqlalchemy.orm import Session
-
-from fastapi import BackgroundTasks
 
 from app.dependencies import get_db, get_admin_user
 from app.models.order import Order, OrderStatusEnum
 from app.models.user import User
+from app.models.notification import Notification
 from app.schemas.order import OrderOut, OrderStatusUpdate
+from app.schemas.notification import NotificationOutScheme
 from app.routers.web_socket.web_socket import manager
 
 router = APIRouter(prefix="/admin/orders", tags=["AdminOrders"])
@@ -43,27 +44,57 @@ def update_order_status(
     data: OrderStatusUpdate,
     db: Session = Depends(get_db),
     admin: User = Depends(get_admin_user),
-    background_tasks: BackgroundTasks = BackgroundTasks(),  # ← добавить
+    background_tasks: BackgroundTasks = BackgroundTasks(),
 ):
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
 
+    if data.status == OrderStatusEnum.completed and order.completed_at is None:
+        order.completed_at = func.now()
+
     order.status = data.status
     db.add(order)
     db.commit()
     db.refresh(order)
-    
+
+    # Уведомление пользователю о смене статуса
+    notif = Notification(
+        user_id=order.user_id,
+        order_id=order.id,
+        title=f"Статус заказа #{order.id} обновлён",
+        text=f"Новый статус: {order.status.value}",
+    )
+    db.add(notif)
+    db.commit()
+    db.refresh(notif)
+
+    notif_payload = NotificationOutScheme.model_validate(notif).model_dump(mode="json")
+
     # Отправляем в фоне, чтобы не блокировать ответ
     background_tasks.add_task(
         manager.broadcast,
-        json.dumps({
-            "type": "order_status_changed",
-            "payload": {
-                "order_id": order.id,
-                "status": order.status.value,  # если это Enum, нужен .value
-            }
-        }, default=str)
+        json.dumps(
+            {
+                "type": "order_status_changed",
+                "payload": {
+                    "order_id": order.id,
+                    "status": order.status.value,
+                },
+            },
+            default=str,
+        ),
     )
-    
+
+    background_tasks.add_task(
+        manager.broadcast,
+        json.dumps(
+            {
+                "type": "notification_created",
+                "payload": notif_payload,
+            },
+            default=str,
+        ),
+    )
+
     return order
