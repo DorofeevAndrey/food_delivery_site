@@ -30,6 +30,8 @@ export type OrderOut = {
   address?: string | null;
   comment?: string | null;
   items: OrderItemOut[];
+  created_at: string;
+  completed_at?: string | null;
 };
 
 export async function createOrder(

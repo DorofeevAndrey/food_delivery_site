@@ -283,7 +283,9 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           icon={<MyOrderIcon />}
           title="Мои заказы"
           variant="white"
-          onClick={() => setView("orders")}
+          onClick={() => {
+            router.push("/orders");
+          }}
         />
         <Button
           className={styles.filledButton}

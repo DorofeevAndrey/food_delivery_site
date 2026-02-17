@@ -1,6 +1,7 @@
 "use client";
 
 import { useRealtime } from "@/hooks/useRealtime";
+import { useRouter } from "next/navigation";
 
 import Modal from "@/components/Atoms/Modal/Modal";
 import styles from "./OrdersModal.module.css";
@@ -20,6 +21,8 @@ export default function OrdersModal({ isOpen, onClose }: Props) {
   const [orders, setOrders] = useState<OrderOut[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   useRealtime((msg) => {
     if (msg.type === "order_status_changed") {
@@ -70,7 +73,13 @@ export default function OrdersModal({ isOpen, onClose }: Props) {
         {!loading && !error && orders.length > 0 && (
           <div className={styles.list}>
             {orders.map((order) => (
-              <OrderCard key={order.id} order={order} />
+              <div
+                key={order.id}
+                className={styles.clickableOrder}
+                onClick={() => router.push(`/orders/${order.id}`)}
+              >
+                <OrderCard order={order} />
+              </div>
             ))}
           </div>
         )}
