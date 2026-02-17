@@ -6,6 +6,7 @@ export type NotificationDto = {
   text: string;
   created_at: string;
   is_read: boolean;
+  order_id?: number | null;
 };
 
 export async function getNotifications(): Promise<NotificationDto[]> {

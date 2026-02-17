@@ -6,6 +6,10 @@
   gap: 20px;
 }
 
+.unread {
+  background: rgba(var(--color-orange-rgb), 0.06);
+}
+
 .icon {
   display: flex;
   align-items: center;

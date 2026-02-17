@@ -4,6 +4,7 @@ import styles from "./NotificationItem.module.css";
 import Button from "../../Atoms/Button/Button";
 import { ReactNode } from "react";
 import NotificationMessageIcon from "@/assets/NotificationMessageIcon";
+import cn from "classnames";
 
 export type NotificationData = {
   id: string;
@@ -13,18 +14,29 @@ export type NotificationData = {
   icon?: ReactNode;
   actionLabel?: string;
   actionHref?: string;
+  isUnread?: boolean;
+   orderId?: number | null;
 };
 
 type Props = {
   data: NotificationData;
-  onAction?: (id: string) => void;
+  onAction?: (id: string, orderId?: number | null) => void;
 };
 
 export default function NotificationItem({ data, onAction }: Props) {
-  const { id, title, text, createdAt, icon, actionLabel = "Перейти" } = data;
+  const {
+    id,
+    title,
+    text,
+    createdAt,
+    icon,
+    actionLabel = "Перейти",
+    isUnread,
+    orderId,
+  } = data;
 
   return (
-    <div className={styles.item}>
+    <div className={cn(styles.item, { [styles.unread]: isUnread })}>
       <div className={styles.icon}>
         <NotificationMessageIcon />
       </div>
@@ -37,7 +49,7 @@ export default function NotificationItem({ data, onAction }: Props) {
             className={styles.actionButton}
             title={actionLabel}
             variant="grey"
-            onClick={() => onAction?.(id)}
+            onClick={() => onAction?.(id, orderId)}
           />
         </div>
       </div>

@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Skeleton from "@/components/Atoms/Sketelon/Skeleton";
+import { useRouter } from "next/navigation";
 
 type Props = {
   isOpen: boolean;
@@ -25,6 +26,8 @@ type Props = {
 export default function NotificationsModal({ isOpen, onClose }: Props) {
   const [items, setItems] = useState<NotificationDto[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -38,12 +41,16 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
       .finally(() => setLoading(false));
   }, [isOpen]);
 
-  const handleAction = async (id: number) => {
+  const handleAction = async (id: number, orderId?: number | null) => {
     const token = Cookies.get("auth_token");
     if (!token) return;
 
     const updated = await markNotificationRead(id);
     setItems((prev) => prev.map((n) => (n.id === id ? updated : n)));
+
+    if (orderId) {
+      router.push(`/orders/${orderId}`);
+    }
   };
   return (
     <Modal
@@ -76,8 +83,10 @@ export default function NotificationsModal({ isOpen, onClose }: Props) {
                 createdAt: new Date(n.created_at).toLocaleString("ru-RU"),
                 icon: <NotificationIcon />,
                 actionLabel: n.is_read ? undefined : "Перейти",
+                isUnread: !n.is_read,
+                orderId: n.order_id ?? null,
               }}
-              onAction={() => handleAction(n.id)}
+              onAction={(_, orderId) => handleAction(n.id, orderId)}
             />
           ))}
       </div>
