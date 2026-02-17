@@ -14,8 +14,24 @@ const STATUS_LABEL: Record<OrderOut["status"], string> = {
   cancelled: "Отменён",
 };
 
+function formatDateTimeRu(iso: string) {
+  const d = new Date(iso);
+  return d.toLocaleString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export default function OrderCard({ order }: Props) {
-  const { id, mode, status, total_price, address, items } = order;
+  const { id, mode, status, total_price, address, items, created_at, completed_at } =
+    order;
+
+  const dateLabel = completed_at
+    ? `Завершён: ${formatDateTimeRu(completed_at)}`
+    : `Создан: ${formatDateTimeRu(created_at)}`;
 
   return (
     <div className={styles.card}>
@@ -33,6 +49,7 @@ export default function OrderCard({ order }: Props) {
 
       <div className={styles.meta}>
         <span>Сумма: {total_price} ₽</span>
+        <span className={styles.date}>{dateLabel}</span>
         {address && <span className={styles.address}>{address}</span>}
       </div>
 
