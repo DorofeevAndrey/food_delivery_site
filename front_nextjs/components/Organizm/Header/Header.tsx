@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileIcon from "@/assets/ProfileIcon";
 import Button from "../../Atoms/Button/Button";
 import CommonModal from "../CommonModal/CommonModal";
@@ -15,6 +15,8 @@ import NotificationsModal from "../NotificationsModal/NotificationsModal";
 import CartModal from "../CartModal/CartModal";
 import { useCart } from "@/hooks/useCart";
 import Skeleton from "@/components/Atoms/Sketelon/Skeleton";
+import { useRealtime } from "@/hooks/useRealtime";
+import type { NotificationDto } from "@/libs/api/notification";
 
 export default function Header() {
   const { user, setUser, logout, refreshUser, isUserLoading } = useUser();
@@ -27,6 +29,24 @@ export default function Header() {
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+
+  const [toastNotification, setToastNotification] =
+    useState<NotificationDto | null>(null);
+  const [isToastVisible, setIsToastVisible] = useState(false);
+
+  useRealtime((msg) => {
+    if (msg.type === "notification_created") {
+      const notif = msg.payload as NotificationDto;
+      setToastNotification(notif);
+      setIsToastVisible(true);
+    }
+  });
+
+  useEffect(() => {
+    if (!isToastVisible) return;
+    const timer = setTimeout(() => setIsToastVisible(false), 5000);
+    return () => clearTimeout(timer);
+  }, [isToastVisible]);
 
   if (isUserLoading) {
     return (
@@ -45,6 +65,15 @@ export default function Header() {
   }
   return (
     <>
+      {toastNotification && isToastVisible && (
+        <div
+          className={styles.toast}
+          onClick={() => setIsToastVisible(false)}
+        >
+          <div className={styles.toastTitle}>{toastNotification.title}</div>
+          <div className={styles.toastText}>{toastNotification.text}</div>
+        </div>
+      )}
       <header className={styles.header}>
         <div className={styles.left}>
           <Button

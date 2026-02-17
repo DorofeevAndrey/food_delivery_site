@@ -67,3 +67,27 @@
     background-position: 0 0;
   }
 }
+
+.toast {
+  position: fixed;
+  top: 8px;
+  right: 16px;
+  z-index: 1000;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  max-width: 320px;
+  cursor: pointer;
+}
+
+.toastTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.toastText {
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.8);
+}
