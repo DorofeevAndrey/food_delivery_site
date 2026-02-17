@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from typing import List
 
@@ -37,6 +38,8 @@ class OrderOut(BaseModel):
   address: str | None
   comment: str | None
   items: List[OrderItemOut]
+  created_at: datetime
+  completed_at: datetime | None = None 
 
   class Config:
     from_attributes = True

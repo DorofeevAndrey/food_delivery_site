@@ -27,6 +27,7 @@ class Order(Base):
     comment = Column(String, nullable=True)
 
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
+    completed_at = Column(DateTime, nullable=True)
 
     user = relationship("User")
     items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
