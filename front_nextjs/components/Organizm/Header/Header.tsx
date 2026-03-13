@@ -66,10 +66,7 @@ export default function Header() {
   return (
     <>
       {toastNotification && isToastVisible && (
-        <div
-          className={styles.toast}
-          onClick={() => setIsToastVisible(false)}
-        >
+        <div className={styles.toast} onClick={() => setIsToastVisible(false)}>
           <div className={styles.toastTitle}>{toastNotification.title}</div>
           <div className={styles.toastText}>{toastNotification.text}</div>
         </div>

@@ -36,7 +36,8 @@ export default function OrderDescriptionPageModal() {
   }, [params.id]);
 
   const handleClose = () => {
-    router.push("/"); // клик вне модалки → на главную
+    // Для intercept/parallel routes закрытие модалки = возврат назад к фону
+    router.back();
   };
 
   return (
@@ -49,7 +50,7 @@ export default function OrderDescriptionPageModal() {
         <Button
           variant="white"
           icon={<BackIcon />}
-          onClick={() => router.push("/orders")}
+          onClick={handleClose}
           className={styles.backButton}
         />
         <div className={styles.title}>

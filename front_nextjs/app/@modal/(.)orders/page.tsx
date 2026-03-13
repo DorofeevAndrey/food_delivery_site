@@ -10,7 +10,7 @@ export default function OrdersPageModal() {
   return (
     <OrdersModal
       isOpen={pathname === "/orders"}
-      onClose={() => router.push("/")}
+      onClose={() => router.back()}
     />
   );
 }
