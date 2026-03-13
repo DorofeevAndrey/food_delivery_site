@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Date, Integer, String, DateTime, Boolean, func
 
-from datetime import datetime
 from app.core.database import Base
 
 class PendingUser(Base):

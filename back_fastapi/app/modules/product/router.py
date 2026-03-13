@@ -3,20 +3,20 @@ from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from uuid import uuid4
 from sqlalchemy.orm import Session
 
-from app.routers.web_socket.web_socket import manager
 from fastapi import BackgroundTasks
 import json
 
 from app.core.s3 import s3_client
 from app.dependencies import get_db, get_admin_user
-from app.models.product import Product
-from app.models.user import User
-from app.schemas.product import (
+from app.modules.product.schema import (
     ProductCreateScheme,
     ProductUpdateScheme,
     ProductOutScheme,
 )
 from app.core.config import settings
+from app.modules.product.model import Product
+from app.modules.profile.model import User
+from app.modules.web_socket import manager
 
 router = APIRouter(prefix="/products", tags=["Products"])
 

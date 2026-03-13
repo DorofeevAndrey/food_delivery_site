@@ -1,11 +1,8 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
+import logging
+from fastapi import WebSocket
 from typing import List
 
-import logging
-
 logger = logging.getLogger(__name__)
-
-router = APIRouter(prefix="/ws", tags=["WebSockets"])
 
 class ConnectionManager:
     def __init__(self):
@@ -35,15 +32,3 @@ class ConnectionManager:
         
         for conn in disconnected:
             self.disconnect(conn)
-
-manager = ConnectionManager()
-
-@router.websocket("/updates")
-async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
-    try:
-        while True:
-            # если клиент что-то шлёт (например, ping)
-            _ = await websocket.receive_text()
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)

@@ -1,17 +1,14 @@
 from decimal import Decimal
-import json
 
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db, get_current_user
-from app.models.order import Order, OrderItem, OrderModeEnum
-from app.models.product import Product
-from app.models.user import User
-from app.models.notification import Notification
-from app.schemas.order import OrderCreate, OrderOut
-from app.schemas.notification import NotificationOutScheme
-from app.routers.web_socket.web_socket import manager
+from app.modules.notification.service import NotificationService
+from app.modules.order.model import Order, OrderItem, OrderModeEnum
+from app.modules.product.model import Product
+from app.modules.profile.model import User
+from app.modules.order.schema import OrderOut, OrderCreate
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
@@ -68,29 +65,14 @@ def create_order(
   db.commit()
   db.refresh(order)
 
-  # Создаём уведомление для пользователя о создании заказа
-  notif = Notification(
+  NotificationService.create_for_order(
+    db=db,
     user_id=current_user.id,
     order_id=order.id,
     title=f"Заказ #{order.id} создан",
     text=f"Ваш заказ создан. Сумма: {order.total_price} ₽",
-  )
-  db.add(notif)
-  db.commit()
-  db.refresh(notif)
-
-  # Отправляем уведомление по WebSocket
-  notif_payload = NotificationOutScheme.model_validate(notif).model_dump(mode="json")
-  background_tasks.add_task(
-    manager.broadcast,
-    json.dumps(
-      {
-        "type": "notification_created",
-        "payload": notif_payload,
-      },
-      default=str,
-    ),
-  )
+    background_tasks=background_tasks,
+)
 
   return order
 

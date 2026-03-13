@@ -3,9 +3,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_current_user, get_db
-from app.models.notification import Notification
-from app.models.user import User
-from app.schemas.notification import  NotificationOutScheme, NotificationUpdateScheme
+from app.modules.notification.model import Notification
+from app.modules.profile.model import User
+from app.modules.notification.schema import NotificationOutScheme, NotificationUpdateScheme
+
 
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
 

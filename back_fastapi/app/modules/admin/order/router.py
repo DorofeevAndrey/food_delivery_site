@@ -4,12 +4,12 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db, get_admin_user
-from app.models.order import Order, OrderStatusEnum
-from app.models.user import User
-from app.models.notification import Notification
-from app.schemas.order import OrderOut, OrderStatusUpdate
-from app.schemas.notification import NotificationOutScheme
-from app.routers.web_socket.web_socket import manager
+from app.modules.notification.model import Notification
+from app.modules.notification.schema import NotificationOutScheme
+from app.modules.order.model import Order, OrderStatusEnum
+from app.modules.order.schema import OrderOut, OrderStatusUpdate
+from app.modules.profile.model import User
+from app.modules.web_socket import manager
 
 router = APIRouter(prefix="/admin/orders", tags=["AdminOrders"])
 

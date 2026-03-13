@@ -1,7 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import user, auth, profile, notification, product, order, admin_order
-from app.routers.web_socket import web_socket
+
+from app.modules.auth.router import router as auth_router
+from app.modules.product.router import router as product_router
+from app.modules.order.router import router as order_router
+from app.modules.profile.router import router as profile_router
+from app.modules.notification.router import router as notification_router
+from app.modules.admin.order.router import router as admin_order_router
+from app.modules.web_socket.router import router as web_socket_router
 
 app = FastAPI(title="Food_Delivery_API")
 
@@ -17,13 +23,12 @@ app.add_middleware(
     allow_headers=["*"],     # все заголовки
 )
 
-app.include_router(user.router)
-app.include_router(auth.router)
-app.include_router(profile.router)
-app.include_router(notification.router)
-app.include_router(product.router)
-app.include_router(order.router)
-app.include_router(admin_order.router)
+app.include_router(auth_router)
+app.include_router(product_router)
+app.include_router(profile_router)
+app.include_router(notification_router)
+app.include_router(order_router)
+app.include_router(admin_order_router)
 
 # WebSocket
-app.include_router(web_socket.router)
+app.include_router(web_socket_router)

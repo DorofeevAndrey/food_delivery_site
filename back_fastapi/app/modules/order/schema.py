@@ -4,7 +4,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from app.models.order import OrderModeEnum, OrderStatusEnum
+from app.modules.order.model import OrderModeEnum, OrderStatusEnum
 
 
 class OrderItemCreate(BaseModel):
