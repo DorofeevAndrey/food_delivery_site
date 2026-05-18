@@ -28,14 +28,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [isUserLoading, setIsUserLoading] = useState(true);
 
   const logout = () => {
-    Cookies.remove("token");
+    Cookies.remove("auth_token");
     setUser(null);
   };
 
   const refreshUser = async () => {
     setIsUserLoading(true);
 
-    const token = Cookies.get("token");
+    const token = Cookies.get("auth_token");
     if (!token) {
       setUser(null);
       setIsUserLoading(false);

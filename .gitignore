@@ -5,6 +5,10 @@ __pycache__/
 
 # DB
 /db/data/
+/minio-data/
+
+# VSCode
+.vscode
 
 # C extensions
 *.so

@@ -1,0 +1,93 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 8px 20px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.left {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.center {
+  justify-self: center; /* логотип реально по центру */
+  display: flex;
+  align-items: center;
+}
+
+.right {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.headerSkeleton {
+  pointer-events: none;
+}
+
+.skelBox {
+  width: 80px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.08) 25%,
+    rgba(0, 0, 0, 0.14) 37%,
+    rgba(0, 0, 0, 0.08) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+.skelLogo {
+  width: 200px;
+  height: 40px;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.08) 25%,
+    rgba(0, 0, 0, 0.14) 37%,
+    rgba(0, 0, 0, 0.08) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.toast {
+  position: fixed;
+  top: 8px;
+  right: 16px;
+  z-index: 1000;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  max-width: 320px;
+  cursor: pointer;
+}
+
+.toastTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.toastText {
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.8);
+}

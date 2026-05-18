@@ -1,0 +1,60 @@
+.card {
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.id {
+  font-weight: 600;
+}
+.mode {
+  font-size: 13px;
+  color: var(--textSecondary);
+}
+.status {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+.status.pending {
+  background: #fff3cd;
+}
+.status.confirmed {
+  background: #d1ecf1;
+}
+.status.completed {
+  background: #d4edda;
+}
+.status.cancelled {
+  background: #f8d7da;
+}
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.date {
+  color: rgba(0, 0, 0, 0.6);
+}
+.items {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}

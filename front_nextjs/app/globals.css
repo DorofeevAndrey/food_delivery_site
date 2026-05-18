@@ -40,9 +40,9 @@
 
   --buttonSmallBorderRadius: 12px;
 
-  --default-fonts: -apple-system, BlinkMacSystemFont, Inter, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
+  --default-fonts:
+    -apple-system, BlinkMacSystemFont, Inter, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 /* @theme inline {
   --color-background: var(--background);
@@ -89,4 +89,10 @@ body {
 
   font-family: var(--default-fonts);
   font-size: var(--font-size-base);
+}
+
+main,
+footer {
+  width: 70%;
+  margin: 0 auto;
 }
